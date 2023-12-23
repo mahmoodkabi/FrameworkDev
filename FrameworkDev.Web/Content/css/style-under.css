@@ -1,0 +1,60 @@
+
+body {
+  background: #EEEEF4; 
+  color:#999;
+  font-family: 'IRANSans', 'IRAN Sans', 'iransans', 'BYekan', 'B Yekan', tahoma;
+}
+
+h1{
+  /*-weight:100;*/
+  font-size:20pt;
+  color:#3c8dbc;
+}
+
+p {
+    font-weight: 600;
+    font-size: medium;
+}
+
+.warning-content {
+    position: absolute;
+    top: 15%;
+    width: 100%;
+    height: 300px;
+    text-align: center;
+    margin: 0;
+    left: -115px;
+}
+#mid{
+	position: relative;
+	width: 600px;
+  height: 135px;
+  margin: 0 auto;
+}
+#image{
+	height:64x;
+	width:64px;
+}
+#image2{
+  position:absolute;
+  top:45px;
+  left : 301px;
+	height:64x;
+	width:64px;
+}
+@media (max-width:668px){
+  #mid{
+    position: relative;
+    width: 100%;
+    /* height: 100%; */
+    margin: 0 auto;
+  }
+  #image2{
+    position: static;
+     height: 64x;
+    width: 90px;
+  }
+}
+.info{
+  color: #3c8dbc;
+}

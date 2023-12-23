@@ -1,0 +1,51 @@
+﻿@using Kendo.Mvc.UI
+
+@(Html.Kendo().Grid<FrameworkDev.Web.Areas.Workflow.Models.VM_WorkDeskRequestParaph>()
+              .Name("KGRequestParaph")
+              .Columns(columns =>
+              {
+                  columns.Command(command => { command.Edit().Text("&nbsp;").CancelText("&nbsp;").UpdateText("&nbsp;").HtmlAttributes(new { @class = "k-grid-command-button", title = "ویرایش" }); command.Destroy().Text("&nbsp;").HtmlAttributes(new { @class = "k-grid-command-button", title = "حذف" }); }).Width(80).Title("عملیات");
+                  columns.Bound(c => c.ParapherFullName).Width(200);
+                  columns.Bound(c => c.ParaphText);
+                  columns.Bound(c => c.Str_ParaphDate).Width(100);
+              })
+              .ToolBar(toolbar =>
+              {
+                  toolbar.Create().Text("&nbsp;").HtmlAttributes(new { @class = "k-grid-toolbar-button" });
+                  toolbar.Excel().Text("&nbsp;").HtmlAttributes(new { @class = "k-grid-toolbar-button" });
+              })
+              .ColumnMenu()
+              .Editable(editable => editable.Mode(GridEditMode.InLine))
+              .Pageable()
+              .Navigatable()
+              .Selectable(selectable =>
+              {
+                  selectable.Mode(GridSelectionMode.Single);
+                  selectable.Type(GridSelectionType.Row);
+              })
+              .Sortable(sortable =>
+              {
+                  sortable.SortMode(GridSortMode.SingleColumn);
+              })
+              .Filterable()
+              .Scrollable(s => s.Height("auto"))
+              .NoRecords("داده ای موجود نیست.")
+              //.Events(events=>events.Edit("KGRequestParaph_onGridEdit"))
+              .DataSource(dataSource => dataSource
+                  .Ajax()
+                  .Model(model => model.Id(p => p.RequestParaphID))
+                  .Read(read => read.Action("RequestParaphs_Read", "WorkDeskParaph", new { area = "Public" }).Data("KGRequestParaph_parameter"))
+                  .Create(create => create.Action("RequestParaphs_Create", "WorkDeskParaph", new { area = "Public" }).Data("KGRequestParaph_parameter"))
+                  .Update(update => update.Action("RequestParaphs_Update", "WorkDeskParaph", new { area = "Public" }))
+                  .Destroy(destroy => destroy.Action("RequestParaphs_Destroy", "WorkDeskParaph", new { area = "Public" }))
+              )
+)
+
+
+<script>
+    function KGRequestParaph_parameter() {
+        return {
+            ReqID: 1
+        };
+    }
+</script>

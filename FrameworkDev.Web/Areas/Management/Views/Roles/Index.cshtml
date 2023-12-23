@@ -1,0 +1,57 @@
+﻿@using Kendo.Mvc.UI
+@using FrameworkDev.Web.Helpers.KendoMVC
+@using FrameworkDev.Web.Areas.Management.Models
+
+@{
+    ViewBag.Title = "نقش ها";
+}
+
+@{
+    var currentUser = User as FrameworkDev.Web.Helpers.Authentication.CustomPrincipal;
+}
+
+<div class="container">
+    <div id="sidenavId" class="sidenav">
+        <fieldset class="bocrud-subgroup" style="padding: 10px !important;background-color: white !important;">
+            @(Html.MyGrid<VM_Role>("RolesGrid", GridEditMode.InLine)
+                                    .Columns(columns =>
+                                    {
+                                        columns.Bound(c => c.RoleId).Width(80);
+                                        columns.Bound(c => c.RoleName).Width(140);
+                                        columns.Bound(c => c.RoleNameFa);
+                                        columns.Command(command => { command.Edit().Visible("editVisible").Text("ویرایش"); }).Width(180);
+                                    }).Scrollable(x => x.Height("auto"))
+                                      .ToolBar(toolbar =>
+                                      {
+                                          if (currentUser.HasPermissionUI("MNG:ROL:C"))
+                                              toolbar.Create().Text(string.Empty);
+
+                                          if (currentUser.HasPermissionUI("MNG:ROL:X"))
+                                              toolbar.Excel().Text(string.Empty);
+
+                                      })
+                                    .Events(events => events.Change("RolesGrid_onChange"))
+                                    .DataSource(dataSource => dataSource.WebApi().Model(model => model.Id(p => p.RoleId))
+                                    .Read(read => read.Url(Url.HttpRouteUrl("DefaultApi", new { controller = "RolesApi" })))
+                                    .Create(create => create.Url(Url.HttpRouteUrl("DefaultApi", new { controller = "RolesApi" })))
+                                    .Update(update => update.Url(Url.HttpRouteUrl("DefaultApi", new { controller = "RolesApi", id = "{0}" })))
+                                    .Destroy(destroy => destroy.Url(Url.HttpRouteUrl("DefaultApi", new { controller = "RolesApi", id = "{0}" })))))
+
+
+        </fieldset>
+        <fieldset class="bocrud-subgroup" style="padding: 10px !important;background-color: white !important;">
+            @(Html.Kendo().TabStrip()
+                                    .Name("tabstrip")
+                                    .Animation(animation => animation.Open(effect => effect.Fade(FadeDirection.In)))
+                                    .Items(tabstrip =>
+                                    {
+
+                                        tabstrip.Add().Text("كاربران گروه").HtmlAttributes(new { style = "width:200px;" }).Selected(true).Content(Html.Partial("Partials/_UserInRole").ToHtmlString());
+                                        tabstrip.Add().Text("دسترسی ها").HtmlAttributes(new { style = "width:200px;" }).Content(Html.Partial("Partials/_Permissions").ToHtmlString());
+                                    }));
+        </fieldset>
+
+    </div>
+</div>
+
+<script src="~/Areas/Management/Views/Roles/Index.js"></script>

@@ -1,0 +1,130 @@
+﻿
+@font-face {
+    font-family: "qld-globe";
+    src: url("../fonts/qld-globe.eot");
+    src: url("../fonts/qld-globe.eot"), url("../fonts/qld-globe.ttf") format("truetype"), url("../fonts/qld-globe.woff") format("woff"), url("https://qldglobe.information.qld.gov.au/fonts/qld-globe.svg") format("svg");
+    font-weight: normal;
+    font-style: normal
+}
+
+@font-face {
+    font-family: 'Material Icons';
+    font-style: normal;
+    font-weight: 400;
+    src: url("../fonts/icon.woff2") format('woff2');
+}
+
+.material-icons {
+    font-family: 'Material Icons';
+    font-weight: normal;
+    font-style: normal;
+    font-size: 24px;
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    display: inline-block;
+    white-space: nowrap;
+    word-wrap: normal;
+    direction: ltr;
+    -webkit-font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+}
+
+/*html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+    vertical-align: baseline;
+    font-family: IRANSANS;
+}*/
+
+
+#map {
+    position: absolute;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+}
+
+.align-element {
+    direction: rtl;
+    /* float: right;  */
+    text-align: right;
+}
+
+#treeService {
+    direction: rtl;
+    border: 1px solid #5e6170;
+    background-color: #3F424F;
+    margin: 10px;
+}
+
+
+
+#dijit_MenuItem_0_text {
+    background-color: #008d4c;
+    color: #ffffff;
+    height: 50px;
+    width: 110px;
+    text-align: center;
+    font-size: x-large;
+    border: 2px;
+    padding: 2px;
+}
+
+#dijit_MenuItem_1_text {
+    background-color: #008d4c;
+    color: #ffffff;
+    height: 50px;
+    width: 110px;
+    text-align: center;
+    font-size: x-large;
+    border: 2px;
+    padding: 2px;
+}
+
+#dijit_MenuItem_2_text {
+    background-color: #008d4c;
+    color: #ffffff;
+    height: 50px;
+    width: 110px;
+    text-align: center;
+    font-size: x-large;
+    border: 2px;
+    padding: 2px;
+}
+
+#dijit_MenuItem_3_text {
+    background-color: #008d4c;
+    color: #ffffff;
+    height: 50px;
+    width: 110px;
+    text-align: center;
+    font-size: x-large;
+    border: 2px;
+    padding: 2px;
+}
+
+.pagination > .active > a, .pagination > .active > a:focus, .pagination > .active > a:hover, .pagination > .active > span, .pagination > .active > span:focus, .pagination > .active > span:hover {
+    z-index: 3;
+    color: #ffffff !important;
+    cursor: default !important;
+    background-color: #008d4c !important;
+    border-color: #545655 !important;
+}
+
+.user-layer-pagination {
+    position: initial;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0px;
+    padding-right: 0;
+    padding-right: 20px;
+}
+
+.eye-green {
+    color: green;
+}
+
+.eye-gray {
+    color: gray;
+}

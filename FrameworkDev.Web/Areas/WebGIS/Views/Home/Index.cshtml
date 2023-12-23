@@ -1,0 +1,722 @@
+﻿@using FrameworkDev.Web.Helpers.Authentication
+
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = null;
+    var CurrentUser = HttpContext.Current.User as CustomPrincipal;
+    if (CurrentUser == null)
+    {
+        CurrentUser = new CustomPrincipal();
+    }
+}
+
+<link href="~/Content/css/Core.css" rel="stylesheet" />
+<link href="~/Content/css/WebGIS.css" rel="stylesheet" />
+<link href="~/Content/js/MapAPI/jquery.ui.slider.css" rel="stylesheet" />
+<link href="~/Content/lib/bootstrap/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/lib/bootstrap/bootstrap-3.4.0-rtl-dist/css/bootstrap-rtl.min.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/fonts/font-awesome/font-awesome.min.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/fonts/iransans/Iransans.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/lib/mdbootstrappersiandatetimepicker/css/jquery.Bootstrap-PersianDateTimePicker.css" rel="stylesheet" type="text/css" />
+<link href="~/Content/css/loading.css" rel="stylesheet" />
+
+<link type="text/css" rel="stylesheet" href="https://js.arcgis.com/3.36/esri/css/esri.css">
+<link type="text/css" rel="stylesheet" href="https://js.arcgis.com/3.36/esri/themes/calcite/dijit/calcite.css">
+<link type="text/css" rel="stylesheet" href="https://js.arcgis.com/3.36/dgrid/css/dgrid.css">
+
+<link href="~/Content/css/FrameworkDev.css" rel="stylesheet" />
+<link href="~/Content/lib/jquery-confirm/jquery-confirm.css" rel="stylesheet" />
+<link href="~/Content/css/pagination.css" rel="stylesheet" />
+
+
+<script src="~/Content/lib/jquery/3.3.1/jquery-3.3.1.min.js" type="text/javascript"></script>
+<script src="~/Content/lib/jquery.ajax/jquery.unobtrusive.ajax.3.2.6.min.js" type="text/javascript"></script>
+<script src="~/Content/lib/jquery.validate/jquery.validate.min.js" type="text/javascript"></script>
+<script src="~/Content/lib/jquery.validate/jquery.validate.unobtrusive.min.js" type="text/javascript"></script>
+<script src="~/Content/lib/jquery-confirm/jquery-confirm.js"></script>
+<script src="~/Content/lib/jquery.cookie/1.4.1/jquery.cookie.js" type="text/javascript"></script>
+<script src="~/Content/lib/jquery.blockui/jquery.blockUI.js" type="text/javascript"></script>
+<script src="~/Content/lib/bootstrap/bootstrap-3.3.7-dist/js/bootstrap.min.js" type="text/javascript"></script>
+<script src="~/Content/lib/mdbootstrappersiandatetimepicker/js/jalaali.js" type="text/javascript"></script>
+<script src="~/Content/lib/mdbootstrappersiandatetimepicker/js/jquery.Bootstrap-PersianDateTimePicker.js" type="text/javascript"></script>
+<script src="~/Content/js/GeneralFunction.js"></script>
+<script src="~/Content/js/persian-date.min.js" type="text/javascript"></script>
+
+<script defer src="https://js.arcgis.com/3.36/init.js"></script>
+
+<script defer src="~/Content/js/MapAPI/baseMap-v1.js"></script>
+<script defer src="~/Content/js/MapAPI/treeMapMake-v1.js"></script>
+<script src="~/Content/js/Pagination.js"></script>
+
+
+<title>Web Application</title>
+
+<script>
+    var webServerURL = "https://gis1.ir";
+    //var webServerURL = "http://localhost:8589";
+</script>
+
+
+<div class="modal " id="loading">
+    <div class="mask ">
+    </div>
+</div>
+
+
+<header id="main-header">
+    <div class="qld-gov-logo">
+        @*<img src="~/images/QLDGovLogo.png" alt="Web GIS" style="display:none;">*@
+    </div>
+
+
+    <div class="title" style="display:none;">
+        @*<img src="~/images/globe-title.gif" alt="Web GIS">*@
+        <div class="header-spinner">
+            <div class="dial"></div>
+            <div class="center"></div>
+        </div>
+    </div>
+    <div id="main-login">
+        <div>
+            <div class="brief-info">
+                <div class="brief-info-icon-container">
+                    <i class="material-icons">person_outline</i>
+                </div>
+                <a href="#" id="userSubject" class="login-right login-link"></a>
+            </div>
+        </div>
+        <div class="dropdown">
+            <ul>
+                <li><a href="#account" class="account-link">حساب کاربری</a></li>
+                <li><a href="/Account/LogOut">خروج</a></li>
+            </ul>
+        </div>
+    </div>
+</header>
+<div id="main-sidebar">
+    <nav id="nav-main-sidebar">
+        <ul class="primary">
+            @*<li class="contains-icon-library">
+                    <a id="contains-icon-libraryId" href="#sidebar-topics" data-modal="topic-open-modal">
+                        <i class="sidebar-icon icon-library"></i>موضوعات
+                    </a>
+                </li>*@
+            <li class="contains-icon-search">
+                <a href="#sidebar-search"><i class="sidebar-icon icon-search"></i>جستجو</a>
+            </li>
+            <li class="contains-icon-layers">
+                <a href="#sidebar-layers">
+                    <i class="sidebar-icon icon-layers"></i>لایه ها<div id="added-layer-badge" class="count"></div>
+                </a>
+            </li>
+            <li class="contains-icon-places">
+                <a href="#sidebar-bookmark">
+                    <i class="sidebar-icon icon-places">
+                    </i>نشان شده ها
+                </a>
+            </li>
+            <li class="contains-icon-features">
+                <a href="#sidebar-feachers">
+                    <i class="sidebar-icon icon-info">
+                    </i>ویژگی ها
+                </a>
+            </li>
+            <li class="contains-icon-GeoCoding">
+                <a href="#sidebar-geoCoding">
+                    <i class="sidebar-icon icon-places">
+                    </i>GeoCoding
+                </a>
+            </li>
+            <li class="contains-icon-reverse-geocoding">
+                <a href="#sidebar-reverse-geoCoding" style="height: 100px;">
+                    <i class="sidebar-icon icon-places">
+                    </i>Revers GeoCoding
+                </a>
+            </li>
+        </ul>
+        <ul class="secondary">
+            @*<li class="contains-icon-map">
+                    <a href="#" data-action="open-map-sidebar">
+                        <i class="sidebar-icon icon-map"></i>نقشه ها
+                        <div id="added-map-badge" class="count">0</div>
+                    </a>
+                </li>*@
+            <li class="contains-icon-print hide-on-mobile-os">
+                <a href="#" data-action="print-show-preview:main" id="btnPrint">
+                    <i class="sidebar-icon icon-print"></i>چاپ
+                </a>
+            </li>
+            @*<li class="contains-icon-help">
+                    <a href="#" data-action="show-help-page:main"><i class="sidebar-icon icon-help"></i>کمک</a>
+                </li>*@
+        </ul>
+    </nav>
+
+    <!----------------------------------------ویژگی های عارضه------------------------------------------>
+    <div id="sidebar-feachers" class="sidebar-content align-element">
+        <div class="close-tab"></div>
+        <div id="sidebar-search-inner" class="sidebar-content-inner">
+            <div class="sidebar-search-content">
+                <div class="sidebar-search-layer sidebar-search-select">
+                    <div class="sidebar-content-head">
+                        <i class="material-icons close-tab">navigate_before</i>
+                        ویژگی ها
+                    </div>
+                    <div class="preamble">
+                        <select id="comLayers">
+                            <option id="firstLayer">لایه اول</option>
+                        </select>
+                        <div class="edit-controls">
+                            <ul style="margin-top: 4px;">
+                                <li id="liAdd" style="display: inline-block; cursor:pointer;">
+                                    <i>
+                                        <img src="~/Content/images/add-512.png" style="width: 25px;" />
+                                    </i>
+                                </li>
+                                <li id="liEdit" style="display: inline-block; cursor:pointer;">
+                                    <i>
+                                        <img src="~/Content/images/edit-512.png" style="width: 25px;" />
+                                    </i>
+                                </li>
+                                <li id="liDelete" style="display: inline-block; cursor:pointer;">
+                                    <i>
+                                        <img src="~/Content/images/delete-512.png" style="width: 25px;" />
+                                    </i>
+                                </li>
+
+                                <li id="liSave" style="display: none; cursor:pointer;">
+                                    <i>
+                                        <img src="~/Content/images/save.jpg" style="width: 25px;" />
+                                    </i>
+                                </li>
+                                <li id="liCancle" style="display: none; cursor:pointer;">
+                                    <i>
+                                        <img src="~/Content/images/cancle.png" style="width: 25px;" />
+                                    </i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="sidebar-scroll-pane mCustomScrollbar _mCS_1 mCS-autoHide mCS_no_scrollbar"
+                         style="overflow: scroll; margin-top:10px;">
+                        <div id="mCSB_1" class="" style="max-height: none;" tabindex="0">
+                            <div id="mCSB_1_container" class="" style="position:relative; top:0; left:0;" dir="ltr">
+                                <ul id="attrLayer" class="search-options">
+                                    <li>ويژگي اول</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div id="mCSB_1_scrollbar_vertical"
+                             class="mCSB_scrollTools mCSB_1_scrollbar mCS-minimal-dark mCSB_scrollTools_vertical"
+                             style="display: none;">
+                            <div class="mCSB_draggerContainer">
+                                <div id="mCSB_1_dragger_vertical" class="mCSB_dragger"
+                                     style="position: absolute; min-height: 50px; height: 0px; top: 0px;">
+                                    <div class="mCSB_dragger_bar" style="line-height: 50px;"></div>
+                                </div>
+                                <div class="mCSB_draggerRail"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!----------------------------------------GeoCoding------------------------------------------>
+    <div id="sidebar-geoCoding" class="sidebar-content align-element">
+        <div class="close-tab"></div>
+        <div id="sidebar-search-inner" class="sidebar-content-inner">
+            <div class="sidebar-search-content">
+                <div class="sidebar-search-layer sidebar-search-select">
+                    <div class="sidebar-content-head">
+                        <i class="material-icons close-tab">navigate_before</i>
+                        تبديل آدرس به مكان بر روي نقشه
+                    </div>
+                    <div class="preamble">
+                        <div class="edit-controls">
+                            <ul style="margin-top: 4px;">
+                                <li id="liGeoCoding" style="cursor:pointer;  list-style-type:none;  margin-right: -40px; margin-left: 15px;">
+                                    <i>
+                                        <button class="btn btn-success" style="width:100%;  background-color:#008d4c;">تبديل آدرس به مكان</button>
+                                    </i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="sidebar-scroll-pane mCustomScrollbar _mCS_1 mCS-autoHide mCS_no_scrollbar"
+                         style="overflow: scroll; margin-top:10px;">
+                        <div id="mCSB_1" class="" style="max-height: none;" tabindex="0">
+                            <div id="mCSB_1_container" class="" style="position:relative; top:0; left:0;" dir="ltr">
+                                <ul id="attrLayer" class="search-options">
+                                    <li style="direction: ltr;">
+                                        شهرستان
+                                        <input type="text" id="txtCounty" style="right: 145px; position: absolute; width: 140px; border: solid; padding: 4px; text-align: right;">
+                                    </li>
+                                    <li style="direction: ltr;">
+                                        شهر
+                                        <input type="text" id="txtCity" style="right: 145px; position: absolute; width: 140px; border: solid; padding: 4px; text-align: right;">
+                                    </li>
+                                    <li style="direction: ltr;">
+                                        منطقه
+                                        <input type="text" id="txtZone" style="right: 145px; position: absolute; width: 140px; border: solid; padding: 4px; text-align: right;">
+                                    </li>
+                                    <li style="direction: ltr;">
+                                        خيابان اصلي
+                                        <input type="text" id="txtMabar1" style="right: 145px; position: absolute; width: 140px; border: solid; padding: 4px; text-align: right;">
+                                    </li>
+                                    <li style="direction: ltr;">
+                                        خيابان فرعي
+                                        <input type="text" id="txtMabar2" style="right: 145px; position: absolute; width: 140px; border: solid; padding: 4px; text-align: right;">
+                                    </li>
+                                    <li style="direction: ltr;">
+                                        كوچه
+                                        <input type="text" id="txtMabar3" style="right: 145px; position: absolute; width: 140px; border: solid; padding: 4px; text-align: right;">
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!----------------------------------------Reverse GeoCoding------------------------------------------>
+    <div id="sidebar-reverse-geoCoding" class="sidebar-content align-element">
+        <div class="close-tab"></div>
+        <div id="sidebar-search-inner" class="sidebar-content-inner">
+            <div class="sidebar-search-content">
+                <div class="sidebar-search-layer sidebar-search-select">
+                    <div class="sidebar-content-head">
+                        <i class="material-icons close-tab">navigate_before</i>
+                        تبديل مكان بر روي نقشه به آدرس
+                    </div>
+                    <div class="preamble">
+                        <div class="edit-controls">
+                            <ul style="margin-top: 4px;">
+                                <li id="liReversegeoCoding" style=" cursor:pointer;  list-style-type:none; margin-right: -40px; margin-left: 15px;">
+                                    <i>
+                                        <span>براي شروع بر روي دكمه زير كليك كنيد</span>
+                                        <button class="btn btn-success" style="width:100%; background-color:#008d4c;">كليك كنيد</button>
+                                        @*<img src="~/Content/images/add-512.png" style="width: 25px;" />*@
+                                    </i>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="sidebar-scroll-pane mCustomScrollbar _mCS_1 mCS-autoHide mCS_no_scrollbar"
+                         style="overflow: scroll; margin-top:10px;">
+                        <div id="mCSB_1" class="" style="max-height: none;" tabindex="0">
+                            <div id="mCSB_1_container" class="" style="position:relative; top:0; left:0;" dir="ltr">
+                                <ul id="attrLayer" class="search-options">
+                                    <li id="liResultReverseGeoCoding" style="direction: ltr;">
+
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div id="sidebar-topics" class="sidebar-content align-element">
+        <div class="close-tab"></div>
+        <div id="sidebar-topics-inner" class="sidebar-content-inner"></div>
+    </div>
+
+    <!----------------------------------------جستجو------------------------------------------>
+    <div id="sidebar-search" class="sidebar-content align-element">
+        <div class="close-tab"></div>
+        <div id="sidebar-layers-inner" class="sidebar-content-inner">
+            <div class="sidebar-search-content">
+                <div class="sidebar-search-layer sidebar-search-select">
+                    <div class="sidebar-content-head">
+                        <i class="material-icons close-tab">navigate_before</i>
+                        جستجو
+                    </div>
+                </div>
+
+                <div class="sidebar-search-layer sidebar-search-select">
+                    <div class="edit-controls" style="margin-top:70px; margin-right:20px; text-align:right;">
+                        <ul style="direction: initial;">
+                            <li style="list-style-type: none; ">
+                                <input id="searchAllLayerAllFeature" placeholder="جستجو"
+                                       style="font-family: IRANSANS, FontAwesome; padding: 8px;
+                                            text-align: center; border: none; border: none; width: 100%; margin-top: 10px;" />
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-scroll-pane mCustomScrollbar _mCS_1 mCS-autoHide mCS_no_scrollbar" style="margin-bottom: 120px;">
+                        <div id="mCSB_1211" class="" style="max-height: none;" tabindex="0">
+                            <div id="mCSB_12_container11" class="" style="position:relative; top:0; left:0;" dir="ltr">
+                                <ul id="lstSearch" class="search-options align-element"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="searchPagination" style="position: absolute; bottom: 0; width: 100%;list-style-type:none; margin-right: 0px;">
+                        <div class="paginationfirst-wrapper" style="text-align: center;">
+                            <div class="paginationfirst">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+    <!----------------------------------------لایه ها------------------------------------------>
+    <div id="sidebar-layers" class="sidebar-content">
+        <div class="close-tab"></div>
+        <div id="sidebar-layers-inner" class="sidebar-content-inner">
+            <div class="sidebar-search-content">
+                <div class="sidebar-search-layer sidebar-search-select">
+                    <div class="sidebar-content-head">
+                        <i class="material-icons close-tab">navigate_before</i>
+                        لایه ها
+                    </div>
+                </div>
+
+                <div class="sidebar-search-layer sidebar-search-select">
+                    <div class="edit-controls" style="margin-top:70px; margin-right:20px; text-align:right;">
+                        <ul style="direction: initial;">
+                            @*<li id="liSaveUserLayer" style="display: inline-block; cursor:pointer;">
+                                    <i>
+                                        <img src="~/Content/images/save.jpg" style="width: 25px;" />
+                                    </i>
+                                </li>*@
+                            <li style="list-style-type: none; ">
+                                <input id="searchUserLayer" placeholder="جستجو"
+                                       style="font-family: IRANSANS, FontAwesome; padding: 8px;
+                                            text-align: center; border: none; border: none; width: 100%; margin-top: 10px;" />
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-scroll-pane mCustomScrollbar _mCS_1 mCS-autoHide mCS_no_scrollbar" style="margin-bottom: 120px;">
+                        <div id="mCSB_12" class="" style="max-height: none;" tabindex="0">
+                            <div id="mCSB_12_container" class="" style="position:relative; top:0; left:0;" dir="ltr">
+                                <ul id="lstUserLayer" class="search-options align-element"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="layerPagination" style="position: absolute; bottom: 0; width: 100%;list-style-type:none; margin-bottom: 60px;margin-right: 0px;">
+                        <div class="paginationfirst-wrapper" style="text-align: center;">
+                            <div class="paginationfirst">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="sidebar-footer">
+                <div id="add-user-layer" class="control"><i class="icon icon-upload"></i> اضافه کردن لایه</div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!----------------------------------------نشان شده ها------------------------------------------>
+    <div id="sidebar-bookmark" class="sidebar-content">
+        <div class="close-tab"></div>
+        <div id="sidebar-bookmark-inner" class="sidebar-content-inner">
+            <div class="sidebar-search-content">
+                <div class="sidebar-search-layer sidebar-search-select">
+                    <div class="sidebar-content-head">
+                        <i class="material-icons close-tab">navigate_before</i>
+                        نشان شده ها
+                    </div>
+                </div>
+
+                <div class="sidebar-search-layer sidebar-search-select">
+                    <div class="edit-controls" style="margin-top:70px; margin-right:20px; text-align:right;">
+                        <ul style="direction: initial;">
+                            <li id="liSaveBookMark" style="display: inline-block; cursor:pointer;">
+                                <i>
+                                    <img src="~/Content/images/save.jpg" style="width: 25px;" />
+                                </i>
+                            </li>
+                            <li>
+                                <input id="searchBookmard" placeholder="جستجو"
+                                       style="font-family: IRANSANS, FontAwesome; padding: 8px;
+                                            text-align: center; border: none; border: none; width: 100%; margin-top: 10px;" />
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="sidebar-scroll-pane mCustomScrollbar _mCS_1 mCS-autoHide mCS_no_scrollbar" style="margin-top: 30px; margin-bottom: 115px;">
+                        <div id="mCSB_1" class="" style="max-height: none;" tabindex="0">
+                            <div id="mCSB_1_container" class="" style="position:relative; top:0; left:0;" dir="ltr">
+                                <ul id="lstBookmark" class="search-options align-element"></ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="position: absolute; bottom: 0; width: 100%;list-style-type:none;margin-right: 20px; margin-bottom: 75px;">
+                        <ul id="lstBookmarkPagination" class="pagination pagination-lg user-layer-pagination"></ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    @*<div id="marker-data" class="sidebar-content">
+            <div class="close-tab"></div>
+            <div id="marker-data-inner" class="sidebar-content-inner"></div>
+        </div>
+        <div class="sidebar-detail">
+            <div class="close-tab"></div>
+            <div class="sidebar-detail-inner sidebar-scroll-pane">
+                <div class="sidebar-detail-image"></div>
+                <div class="close-tab close-tab-button"></div>
+                <div class="sidebar-detail-title"></div>
+                <div class="sidebar-detail-content"></div>
+            </div>
+        </div>*@
+
+</div>
+
+<div id="main-tools">
+    <div id="idTools" class="control"></div>
+    <ul class="tools">
+        <li style="cursor: pointer;" id="liIdentity"
+            <a href="#" data-action="tool:identify" data-toggle="tooltip"
+               title="شناسايي">
+                <i class="icon icon-tool-identify"></i>
+            </a>
+        </li>
+        <li style="cursor: pointer;"
+            <a href="#" id="btnBookmark" data-toggle="tooltip" title="نشانه گذاری">
+                <i class="icon icon-add"></i>
+            </a>
+        </li>
+        <li style="cursor: pointer;"
+            <a href="#" id="btnFullExtent" data-toggle="tooltip" title="اندازه کامل">
+                <i class="sidebar-icon icon-library"></i>
+            </a>
+        </li>
+        <li style="cursor: pointer;"
+            <a href="#" id="btnZoomprev" data-toggle="tooltip" title="نمای قبلی">
+                <img  src="~/Content/images/back.png" style="width: 32px; margin-top: -10px; opacity: 0.5;" />
+            </a>
+        </li>
+        <li style="cursor: pointer;"
+            <a href="#" id="btnZoomnext" data-toggle="tooltip" title="نمای بعدی">
+                <img src="~/Content/images/next.png" style="width: 32px; margin-top: -10px; opacity: 0.5;"/>
+            </a>
+        </li>
+        <li style="cursor: pointer;"
+            <a href="#" id="btnDrawShape" data-toggle="tooltip" title="رسم شکل">
+                <i class="icon icon-tool-rectangle"></i>
+            </a>
+        </li>
+    </ul>
+
+    <div id="drawShape">
+    </div>
+
+
+    <style>
+        #main-tools.open .tools,
+        #main-tools.open .attributes,
+        #main-tools.open .options {
+            width: 21px;
+            border: solid 1px #c7cad1;
+        }
+
+        #main-tools.open .options {
+            border-top: none;
+        }
+    </style>
+</div>
+
+
+
+<div id="mapContainer" class="map-container">
+    <div id="mapDraftSurface" class="draft-surface">
+        <div id="divMap">
+        </div>
+    </div>
+</div>
+
+
+
+
+@*<div id="main-topics" class="modal modal-large">
+        <div class="mask close"></div>
+        <div class="modal-inner topics-main">
+            <div class="sidebar-topics-content">
+                <div class="sidebar-content-head">موضوعات</div>
+                <a href="#close" class="close close-btn"><i class="material-icons">close</i></a>
+
+                <div class="modal-row">
+                    <div class="modal-sidebar">
+                        <div class="control">
+                            <div class="radio">
+                                <input type="radio" id="topics-all-topics" name="topics-featured-filter" value="all"
+                                       checked="">
+                                <label for="topics-all-topics">تمامی موضوعات</label>
+                            </div>
+                            <div class="radio">
+                                <input type="radio" id="topics-featured" name="topics-featured-filter" value="featured">
+                                <label for="topics-featured">ویژه</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-detail topics-details-content "></div>
+            </div>
+        </div>
+    </div>*@
+
+
+<div id="main-feachers" class="modal modal-large cls-identify">
+    <div class="modal-inner topics-main">
+        <div class="sidebar-topics-content">
+            <div class="sidebar-content-head" style="top: 0px;	margin-top: 0px;">ویژگی ها</div>
+            <a href="#close" class="close close-btn"><i class="material-icons">close</i></a>
+            <div class="modal-row">
+                <div class="modal-main">
+                    <div class="sidebar-scroll-pane mCustomScrollbar _mCS_1 mCS-autoHide mCS_no_scrollbar"
+                         style="overflow: visible;">
+                        <div id="mCSB_1" class="" style="max-height: none;" tabindex="0">
+                            <div id="mCSB_1_container"
+                                 style="position:relative; top:0; left:0; overflow: scroll; height:50em; "></div>
+
+                            <ul class="search-options">
+                                <li data-value="plssearch" id="plssearch">آدرس</li>
+                                <li data-value="lot" id="melksearch">ملک</li>
+                                <li data-value="town" id="nozasiSearch">کد نوسازی</li>
+                                <li data-value="features" id="codePostisearch">کد پستی</li>
+                                <li data-value="latlong" id="latlongsearch">طول و عرض جغرافیایی</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div id="mCSB_1_scrollbar_vertical"
+                         class="mCSB_scrollTools mCSB_1_scrollbar mCS-minimal-dark mCSB_scrollTools_vertical"
+                         style="display: none;">
+                        <div class="mCSB_draggerContainer">
+                            <div id="mCSB_1_dragger_vertical" class="mCSB_dragger"
+                                 style="position: absolute; min-height: 50px; height: 0px; top: 0px;">
+                                <div class="mCSB_dragger_bar" style="line-height: 50px;"></div>
+                            </div>
+                            <div class="mCSB_draggerRail"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-detail topics-details-content "></div>
+</div>
+<div id="bookmark-feachers" class="modal modal-large open sidebar-content align-element" style="display: none;">
+    <div class="mask close">
+        <div class="modal-inner topics-main">
+            <div class="sidebar-topics-content">
+                <div id="sidebar-search-inner" class="sidebar-content-inner">
+                    <div class="sidebar-search-content">
+                        <div class="sidebar-search-layer sidebar-search-select">
+                            <div class="sidebar-content-head">
+                                نشانه
+                            </div>
+                            <a href="#" id="closeBookmarkDiv" class="close close-btn">
+                                <i class="material-icons">close</i>
+                            </a>
+                            <div class="preamble">
+
+                            </div>
+                            <div class="sidebar-scroll-pane mCustomScrollbar _mCS_1 mCS-autoHide mCS_no_scrollbar"
+                                 style="overflow: visible;">
+                                <div class="" style="max-height: none;" tabindex="0">
+                                    <div class="" style="position:relative; top:0; left:0;" dir="ltr">
+
+                                        <div class="form">
+                                            <input id="txtBookmarkName" class="cls-textBox" placeholder="نام"
+                                                   autocomplete="off">
+                                            <textarea id="txtBookmarkDescription" class="cls-textBox"
+                                                      placeholder="شرح" autocomplete="off"></textarea>
+                                            <button class="btn" id="saveBookMarkMap"
+                                                    style="width: 90%; margin: 10px;">
+                                                ذخیره نشانه
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div id="mCSB_1_scrollbar_vertical"
+                                     class="mCSB_scrollTools mCSB_1_scrollbar mCS-minimal-dark mCSB_scrollTools_vertical"
+                                     style="display: none;">
+                                    <div class="mCSB_draggerContainer">
+                                        <div id="mCSB_1_dragger_vertical" class="mCSB_dragger"
+                                             style="position: absolute; min-height: 50px; height: 0px; top: 0px;">
+                                            <div class="mCSB_dragger_bar" style="line-height: 50px;"></div>
+                                        </div>
+                                        <div class="mCSB_draggerRail"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="upload" class="close" style="font-weight: 100;">
+    <a href="#" id="colse-user-upload" class="close-upload"><i class="material-icons">clear</i></a>
+
+    <form id="upload-url-form" class="upload-inner">
+
+        <div class="progress"><span><i class="icon icon-upload"></i></span><canvas width="56" height="56"></canvas></div>
+
+        <div>
+            @*<div class="subtitle" style="margin-bottom:10px;">فایل های خود را آپلود کنید و یا مسیر URL را وارد کنید </div>*@
+            <div class="subtitle" style="margin-bottom:10px;">فایل های خود را آپلود کنید</div>
+        </div>
+        <div class="msg" style="margin-bottom:10px;"> .kml, .kmz, .shapefile</div>
+        @*<div class="msg" style="margin-bottom:10px;"> .gpx, .kml, .kmz, .csv, shapefile, .json, .png and .jpg</div>*@
+        @*<input id="showFile" type="checkbox" checked>
+            <label style="font-weight: 100;">این فایل برای سایر کاربران نمایش داده شود</label>
+            <label id="lblAlertUpload" style="font-weight: 700; font-size:larger; color:red; visibility:hidden">در صورتی که این گزینه فعال نباشد، اطلاعات سایر کاربران برای شما نیز نمایش داده نمی شود</label>*@
+        <div class="box">
+            <div class="upload item flex">
+                <input class="form-control" type="text" />
+                <div class="input-group-btn">
+                    <label for="files" class="btn btn-default" style="background-color: #008d4c; color: white; margin-top: 5px; border-color: white">جستجو</label>
+                    <input id="files" type="file" class="btn btn-default" style="visibility:hidden;" />
+                </div>
+                @*<span class="or">یا</span>*@
+            </div>
+            @*<div class="item flex" style="margin-top: 15px;">
+                    <input class="upload-url" type="text" name="upload_url" placeholder="https://" style="text-align: left; direction: ltr;">
+                    <button class="button" style="background-color: #008d4c;">URL را وارد کنید</button>
+                </div>
+                <div class="sublayers-options-container">
+                    <select class="sublayers-options item" multiple=""></select>
+                </div>*@
+        </div>
+    </form>
+</div>
+
+
+<script src="~/Areas/WebGIS/Views/Home/Index.js?v=999990"></script>
+<script>
+    $(document).ready(function () {
+    if (getCookie("FrameworkDevAuth") != null && getCookie("FrameworkDevAuth") != "") {
+        $('a#userSubject').text("@CurrentUser.FirstName @CurrentUser.LastName");
+    }
+    else {
+        $('a#userSubject').text("ورود یا ایجاد حساب");
+    }
+
+});
+</script>
+

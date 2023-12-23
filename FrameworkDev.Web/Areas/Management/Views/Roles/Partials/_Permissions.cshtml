@@ -1,0 +1,26 @@
+﻿@using Kendo.Mvc.UI;
+@using FrameworkDev.Web.Areas.Management.Models
+
+@model VM_Role
+
+<link href="/Areas/Management/Views/Roles/Tabs/_Permissions.css" rel="stylesheet" />
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4">
+            @Html.EditorFor(x => x.RoleId, "IGStringTextBox")
+        </div>
+        <div class="col-md-4">
+            @Html.EditorFor(x => x.RoleName, "IGStringTextBox")
+        </div>
+        <div class="col-md-4">
+            @Html.EditorFor(x => x.RoleNameFa, "IGStringTextBox")
+        </div>
+    </div>
+</div>
+
+<div id="mytv" class="ButtonBar">
+    @(Html.Kendo().TreeView().HtmlAttributes(new { @class = "k-floatwrap" }).Name("RolePermissions").DataTextField("PermissionName").Checkboxes(c => { c.Enabled(true).CheckChildren(false); }).DataSource(d => d.Model(m => m.Id("PermissionKey").HasChildren("HasChildren")).Read(r => r.Url("/api/PermissionKeysapi/a/GetPermissionKeysTree").Data("RolePermissions_additionalData"))).Events(e => e.Check("RolePermissions_Check")) )
+</div>
+
+<script src="/Areas/Management/Views/Roles/Partials/_Permissions.js"></script>

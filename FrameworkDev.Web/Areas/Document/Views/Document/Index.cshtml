@@ -1,0 +1,55 @@
+﻿
+@using Kendo.Mvc.UI
+@using FrameworkDev.Web.Helpers.KendoMVC
+@using FrameworkDev.Web.Areas.Document.Controllers
+
+@{
+    ViewBag.Title = "پیوست";
+}
+
+
+
+<form id="DocumentForm" class="Document">
+    <div class="container-fluid">
+        <div class="row">
+            <fieldset class="bocrud-subgroup" style="padding: 10px !important;background-color: white !important;">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div id="ButtonBar" class="ButtonBar">
+                            @(Html.Kendo().Button()
+                                .Name("btnShowDocList")
+                                .HtmlAttributes(new { type = "button" })
+                                .Icon("info")
+                                .Content("لیست پیوست ها")
+                                .Events(ev => ev.Click("showDocumentDialog"))
+                            )                           
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</form>
+
+@*<div id="DialogDocument">
+    @(Html.Kendo().Window()
+                    .Name("DocumentDialog")
+                    .Visible(false)
+                    .Title("پیوست ها")
+                    .Content(Html.Partial("_DocList").ToHtmlString())
+                    .Width(800)
+                    .Modal(false)
+                    .Actions(actions => actions.Maximize().Close())
+                    .Events(ev => ev.Close("onClose"))
+)
+</div>*@
+
+@*########################################################################################*@
+
+
+<script src="~/Areas/Document/Views/Document/Document.js"></script>
+<script>
+    function showDocumentDialog() {
+        openDialog("BAS.TBL_BaseInfo", "1");
+    }
+</script>

@@ -1,0 +1,1036 @@
+﻿@using Kendo.Mvc.UI
+
+@{
+    ViewBag.Title = " كارتابل مجوز نحوه پرداخت" + " __ " + ViewBag.Kind;
+    var currentUser = User as FrameworkDev.Web.Helpers.Authentication.CustomPrincipal;
+}
+<br />
+
+<style>
+    .k-dropdown{
+        width:auto;
+    }
+</style>
+
+<div class="container-fluid" id="div_cartabletype_3_4" style="display:none;">
+    <div class="row">
+        <fieldset class="bocrud-subgroup" style="padding: 10px !important;background-color: white !important;">
+
+            @(Html.Kendo().Grid<FrameworkDev.Web.Areas.Workflow.Models.VM_WorkDesk>()
+                    .Name("KGWorkDesk").HtmlAttributes(new { @class = "NotResizeable" })
+                    .Columns(columns =>
+                    {
+                    columns.Bound(c => c.PermissionStatusName).Title("وضعیت مجوز").Width(100);
+                    columns.Bound(c => c.StatusDate).Title("تاریخ تغییر وضعیت مجوز").Width(140);
+                    columns.Bound(c => c.fullnamefrom).Title("فرستنده").Width(100);
+                    columns.Bound(c => c.fullnameini).Title("ثبت كننده").Width(100);
+                    columns.Bound(c => c.FileNo).Title("شماره پرونده").Width(130);
+                    columns.Bound(c => c.PermissionType).Title("نوع مجوز").Width(100);
+                    columns.Bound(c => c.ZName).Title("نام منطقه").Width(100);
+                    columns.Command(command =>
+                    {
+                    command.Custom("Approve").Visible("KGWorkDesk_ApproveAccess").Text("&nbsp;").Click("KGWorkDesk_OnConfirmation").IconClass("k-icon k-i-check").HtmlAttributes(new { @class = "k-grid-toolbar-button", title = "تایید", style = "width:20px;" });
+                    command.Custom("Reject").Visible("KGWorkDesk_RejectAccess").Text("&nbsp;").Click("KGWorkDesk_OnReject").IconClass("k-icon k-i-close").HtmlAttributes(new { @class = "k-grid-toolbar-button", title = "رد جهت ویرایش", style = "width:20px;" });
+                    command.Custom("Show").Visible("KGWorkDesk_ShowReqAccess").Text("&nbsp;").Click("KGWorkDesk_OnShowReq").IconClass("k-icon k-i-preview").HtmlAttributes(new { @class = "k-grid-toolbar-button", title = "مشاهده", style = "width:20px;" });
+                    command.Custom("Edit").Visible("KGWorkDesk_EditReqAccess").Text("&nbsp;").Click("KGWorkDesk_OnEditReq").IconClass("k-icon k-i-edit").HtmlAttributes(new { @class = "k-grid-toolbar-button", title = "ویرایش", style = "width:20px;" });
+                    }).Width(100).Title("عملیات").HeaderHtmlAttributes(new { @style = "text-align: center" });
+                    })
+                    .ToolBar(toolbar =>
+                    {
+                    toolbar.Excel().Text("&nbsp;").HtmlAttributes(new { @class = "k-grid-toolbar-button" });
+
+
+                    })
+                    .Excel(x => x.Filterable(true).AllPages(true))
+                    .ColumnMenu().Scrollable().Groupable().Sortable()
+                    .Editable(editable => editable.Mode(GridEditMode.InLine))
+                    .Pageable()
+                    .Events(events => events.DataBound("KGWorkDesk_RowDataBound"))
+                    .Navigatable()
+                    .NoRecords("داده ای موجود نیست.")
+                    .Selectable(selectable =>
+                    {
+                    selectable.Mode(GridSelectionMode.Single);
+                    selectable.Type(GridSelectionType.Row);
+                    })
+                    .Sortable(sortable =>
+                    {
+                    sortable.SortMode(GridSortMode.SingleColumn);
+                    })
+                    .Filterable(ab => ab.Mode(GridFilterMode.Row)).Navigatable()//filter => filter.Mode(GridFilterMode.Menu)
+                    .Scrollable(sortable => sortable.Height("auto"))
+                    //.HtmlAttributes(new { style = "height:100%;" })
+                    //.AutoBind(true)
+                    .DataSource(dataSource => dataSource
+                    .Ajax()
+                    .Model(model => model.Id(p => p.ID))
+                    .Read(read => read.Action("MyWorkDesk", "MyWorkFlow").Data("KGWorkDesk_parameter"))
+)
+            )
+        </fieldset>
+    </div>
+</div>
+
+<div id="RequestPanel" style="position:unset;display:none">
+
+    <div class="panel panel-info">
+        <div class="panel-heading">
+            <div class="pull-right">
+                <a role="button" href="#" onclick="RequestBody_onClose()" class="k-button k-bare k-button-icon k-window-action" aria-label="Close">
+                    <span class="k-icon k-i-close"></span>
+                </a>
+            </div>
+            <div class="center"> <label>مشاهده جزییات درخواست</label></div>
+        </div>
+        <div class="panel-body" id="RequestBody">
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+    function KGWorkDesk_ApproveAccess(dataItem)
+{
+    if ('@currentUser.HasPermissionUI("STP:WKF:A")' == 'True')
+     //   if (dataItem.RequestResultID == 22) //22=درحال بررسی
+        if ('@ViewBag.Mode' =='ToDoReq'){
+            return true;
+        }
+    if ('@currentUser.HasPermissionUI("STP:WKF:R")' == 'True')
+       // if (dataItem.RequestResultID == 23) //23=ردجهت ویرایش
+        if ('@ViewBag.Mode' =='ToDoReq') {
+            return true;
+        }
+    return false;
+}
+function KGWorkDesk_RejectAccess(dataItem)
+{
+    if ('@currentUser.HasPermissionUI("STP:WKF:E")' == 'True' )//&& (dataItem.RequestResultID == 22))
+        if ('@ViewBag.Mode' =='ToDoReq') {
+        return true;
+    }
+    return false;
+}
+
+function KGWorkDesk_ShowReqAccess(dataItem)
+{
+    if ('@currentUser.HasPermissionUI("STP:WKF:R")' == 'True')
+    {
+        return true;
+    }
+    return true;
+}
+function KGWorkDesk_EditReqAccess(dataItem)
+{
+    if ('@currentUser.HasPermissionUI("STP:WKF:EE")' == 'True')// && (dataItem.RequestResultID == 23 || dataItem.RequestResultID == 22))
+    //22=در حال بررسی
+    //23= رد جهت ویرایش
+    {
+        return true;
+    }
+    if ('@currentUser.HasPermissionUI("STP:WKF:RR")' == 'True' )//&& dataItem.RequestResultID == 23)
+    {
+        return true;
+    }
+    return false;
+}
+
+
+
+
+    $().ready(function () {
+       @{/* نوار ابزار بالای گرید */}
+
+
+    var toolbar = $('#KGWorkDesk .k-grid-toolbar');
+
+        @{/* ایجاد فیلتر تا تاریخ */}
+    makeMDPDatePicker($('#PSTREndDFilter'), false, true, 'DFilter');
+    //$('#PSTREndDFilter').change(function () { GridFilters_change(); });
+    toolbar.prepend($('#divPSTREndDFilter'));
+
+        @{/* ایجاد فیلتر از تاریخ */}
+    makeMDPDatePicker($('#PSTRstartDFilter'), true, false, 'DFilter');
+    //$('#PSTRstartDFilter').change(function () { GridFilters_change(); });
+    toolbar.prepend($('#divPSTRstartDFilter'));
+
+        @{/* ایجاد فیلتر نوع  */}
+        toolbar.prepend($('#divRequestKindFilter'));
+
+
+});
+    function GridFilters_change()
+{
+    var grid = $("#KGWorkDesk").data("kendoGrid");
+    grid.dataSource.read();
+}
+    function KGWorkDeskDoc_RowDataBound(e)
+    {
+
+    }
+function KGWorkDesk_RowDataBound(e)
+{
+    if ('@User.IsInRole("WelfareCenterResponsible")' == 'True')
+    {
+        var rows = e.sender.tbody.children();
+
+        for (var j = 0; j < rows.length; j++)
+        {
+            var row = $(rows[j]);
+            var dataItem = e.sender.dataItem(row);
+
+            if (dataItem.get("TEVEnterDate") == null)
+            {
+                row.css("background-color", "#ff000087");
+            }
+        }
+    }
+}
+
+function KGWorkDesk_parameter()
+{
+    var param1 = '@ViewBag.Type'; @*"WorkDesk,InitialUserAndNotSend";//"WorkDeskVilla";//'@ViewBag.Type';*@
+
+   // var param4 = $("#WorkflowType").data("kendoDropDownList").value();
+    return {
+        type: param1,
+        fromDate: "",
+        toDate: "",
+        wrokflowType:""
+    };
+    }
+
+function KGWorkDeskDoc_parameter()
+{
+    var param1 = '@ViewBag.Type'; @*"WorkDesk,InitialUserAndNotSend";//"WorkDeskVilla";//'@ViewBag.Type';*@
+
+    var param4 = $("#WFTypeDDL").data("kendoDropDownList").value();
+    var wft;
+    if (param4 == 0 || param4 == 2)
+        wft = "5";
+    else
+        wft = "";
+    return {
+        type: param1,
+        fromDate: "",
+        toDate: "",
+        wrokflowType:wft
+    };
+}
+
+var dataItem;
+function KGWorkDesk_OnConfirmation(e)
+{
+    var item = this.dataItem($(e.currentTarget).closest("tr"));
+    dataItem = item;
+    confirmationWorkDeskMessage();
+}
+
+function confirmationWorkDeskMessage()
+{
+    if (dataItem + "" == "undefined")
+    {
+        dataItem = getSelectedRow("KGWorkDesk");
+    }
+        $.ajax({
+        url: '@Url.Action("SendToWorkFlow", "MyWorkFlow")',
+            data:
+        {
+                    'workFlowType': dataItem.WorkFlowTypeID ,
+                    'workFlowStepType': 'NextLevel',
+                    'requestID': dataItem.RequestID,
+                    'currentStepID': dataItem.WorkFlowStepID,
+                    'sendOrMessage': 'Message',
+                    'externalCondition':'Approve'
+            },
+            datatype: "json",
+            type: "POST",
+            success: function(res) {
+
+            // در صورتی كه درخواست قبلا ثبت نهایی شده باشد اجازه تغییر بر روی درخواست را نمی دهد
+            if (res.data[0].ExceptionMessage == 'ExceptionMessage')
+            {
+                Alert('fa fa-frown-o', ' خطا ', res.data[0].Message, 'red', '', null);
+            }
+            // در صورتی كه ایرادی جهت ارسال به مرحله بعد یا ثبت نهایی وجود نداشته باشد
+            else
+            {
+                ConfirmAlertCustom('تایید درخواست', res.data[0].Message, confirmationWorkDeskSend, "بله", "خیر");
+                 
+
+            }
+        },
+            error: function(ex) {
+            //console.log(ex.statusText);
+        }
+    });
+}
+function confirmationWorkDeskSend()
+{
+        $.ajax({
+        url: '@Url.Action("SendToWorkFlow", "MyWorkFlow")',
+            data:
+        {
+                'workFlowType': dataItem.WorkFlowTypeID,
+                'workFlowStepType': 'NextLevel',
+                'requestID': dataItem.RequestID,
+                'currentStepID': dataItem.WorkFlowStepID,
+                'sendOrMessage': 'Send',
+                'externalCondition': 'Approve'
+            },
+            datatype: "json",
+            type: "POST",
+            success: function(res) {
+
+            if (res.data[0].ExceptionMessage == 'ExceptionMessage')
+            {
+                Alert('fa fa-frown-o', ' خطا ', res.data[0].Message, 'red', '', null);
+            }
+            else
+            {
+                Alert('fa fa-smile-o', 'موفق', res.data[0].Message, 'green', '', null);
+                    //$("#KGWorkDesk").data("kendoGrid").dataSource.data([]);
+                    //$("#KGWorkDesk").data("kendoGrid").dataSource.read();
+                RequestBody_onClose();
+            }
+        },
+            error: function(ex) {
+            //console.log(ex.statusText);
+        }
+    });
+}
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+function KGWorkDesk_OnReject(e)
+{
+    var item = this.dataItem($(e.currentTarget).closest("tr"));
+    dataItem = item;
+    rejectWorkDeskMessage();
+}
+
+function rejectWorkDeskMessage()
+{
+        $.ajax({
+        url: '@Url.Action("SendToWorkFlow", "MyWorkFlow")',
+            data:
+        {
+                'workFlowType': dataItem.WorkFlowTypeID,
+                'workFlowStepType': 'PreviousLevel',
+                'requestID': dataItem.RequestID,
+                'currentStepID': dataItem.WorkFlowStepID,
+                'sendOrMessage': 'Message',
+                'externalCondition': ''
+            },
+            datatype: "json",
+            type: "POST",
+            success: function(res) {
+            // در صورتی كه درخواست قبلا ثبت نهایی شده باشد اجازه تغییر بر روی درخواست را نمی دهد
+            if (res.data[0].ExceptionMessage == 'ExceptionMessage')
+            {
+                Alert('fa fa-frown-o', ' خطا ', res.data[0].Message, 'red', '', null);
+            }
+            else if (res.data[0].EngMessage == 'NoExsistPreviousStep')
+            {
+                Alert('fa fa-frown-o', ' خطا ', res.data[0].Message, 'red', '', null);
+            }
+            // در صورتی كه ایرادی وجود نداشته باشد
+            else
+            {
+                //ConfirmAlertCustom('رد درخواست جهت ویرایش', res.data[0].Message, rejectWorkDeskSend, "بله", "خیر");
+                ConfirmAlertWithTextArea('رد درخواست جهت ویرایش', res.data[0].Message, "", rejectWorkDeskSend, null, "بله", "rejectWorkDeskDsc", "پاراف")
+                    RequestBody_onClose();
+            }
+        },
+            error: function(ex) {
+            //console.log(ex.statusText);
+        }
+    });
+}
+function rejectWorkDeskSend()
+{
+        $.ajax({
+        url: '@Url.Action("SendToWorkFlow", "MyWorkFlow")',
+            data:
+        {
+                'workFlowType': dataItem.WorkFlowTypeID,
+                'workFlowStepType': 'PreviousLevel',
+                'requestID': dataItem.RequestID,
+                'currentStepID': dataItem.WorkFlowStepID,
+                'sendOrMessage': 'Send',
+                'externalCondition': '',
+                'paraph': $('#rejectWorkDeskDsc').val()
+            },
+            datatype: "json",
+            type: "POST",
+            success: function(res) {
+
+            if (res.data[0].ExceptionMessage == 'ExceptionMessage')
+            {
+                Alert('fa fa-frown-o', ' خطا ', res.data[0].Message, 'red', '', null);
+            }
+            else
+            {
+                Alert('fa fa-smile-o', 'موفق', res.data[0].Message, 'green', '', null);
+                    $("#KGWorkDesk").data("kendoGrid").dataSource.data([]);
+                    $("#KGWorkDesk").data("kendoGrid").dataSource.read();
+            }
+        },
+            error: function(ex) {
+            //console.log(ex.statusText);
+        }
+    });
+}
+
+
+
+    function RequestBody_onClose() {
+       
+        var grid1 = $("#KGWorkDesk").data("kendoGrid");
+        grid1.refresh();
+        $('#KGWorkDesk').data("kendoGrid").dataSource.page(1);
+
+        $('#KGWorkDesk').css('height', '98%');
+        $('#KGWorkDesk .k-grid-content').css("height", "85%");
+        $('#RequestPanel').hide();
+        ShowAllKendoGridRow('KGWorkDesk');
+
+
+    }
+
+function KGWorkDesk_OnShowReq(e)
+{
+    makeComponentDisabled('container-fluid', true);
+    var grid = $("#KGWorkDesk").data("kendoGrid");
+    var dataItem = grid.dataItem(e.target.closest("tr"));
+    grid.select(e.target.closest("tr"));
+    EntityId = dataItem.EntityID;
+    var WorkflowTypeID = dataItem.WorkFlowTypeID;
+    var url = "";
+    switch (WorkflowTypeID) {
+        case 1:
+            url = '@Url.Action("EARequestView", "EncourageAcademic", new { area = "Welfare" })/' + EntityId;
+            break;
+        case 2:
+            url = '@Url.Action("RULRequestView", "RulInfo", new { area = "Rulings" })/' + EntityId;
+            break;
+        case 3: //مجوز نحوه پرداخت
+            url = '@Url.Action("_Index", "MyWorkFlow", new { area = "StaffPortal" })/' + EntityId;
+            break;
+        case 4: //مجوز عملیات چک
+            url = '@Url.Action("LoadChequePartial", "ChequeOprPermissions", new { area = "CheckOperation" })?ChqPermissionType=' + EntityId+'&mode=2';
+            break;
+        case 5://مجوز استرداد وجه
+            url = '@Url.Action("LoadChequePartial", "ChequeOprPermissions", new { area = "CheckOperation" })?ChqPermissionType=' + EntityId+'&mode=2';
+            break;
+        default:
+    }
+
+    $('#RequestBody').load(url, function () {
+
+             $('#KGWorkDesk').css('height', '15%');
+             $('#KGWorkDesk .k-grid-content').css("height", "unset");
+             HideOtherKendoGridRow('KGWorkDesk', dataItem.uid, 'RequestPanel');
+
+             if (WorkflowTypeID==3)
+                 fillPayPermission2(EntityId);
+
+             if (WorkflowTypeID == 4) {
+                 fillchequePermission2(EntityId, dataItem);
+                 $("#ChequeGrid").data("kendoGrid").dataSource.read();
+             }
+
+        $(".action").hide();
+        $(".k-grid-toolbar").hide();
+
+    });
+}
+
+function KGWorkDesk_OnShowParaphList(e)
+{
+    var grid = $("#KGWorkDesk").data("kendoGrid");
+    var dataItem = grid.dataItem(e.target.closest("tr"));
+    grid.select(e.target.closest("tr"));
+    var requestId = dataItem.RequestID;
+    var url = '@Url.Action("_Index", "WorkDeskParaph", new { area = "Workflow" })/' + requestId;
+         $('#RequestBody').load(url, function() {
+             $('#KGWorkDesk').css('height', '15%');
+             $('#KGWorkDesk .k-grid-content').css("height", "unset");
+        HideOtherKendoGridRow('KGWorkDesk', dataItem.uid, 'RequestPanel');
+        // ManageAccessToControl();
+    });
+}
+function KGWorkDesk_OnEditReq(e)
+{
+    var grid = $("#KGWorkDesk").data("kendoGrid");
+    var dataItem = grid.dataItem(e.target.closest("tr"));
+    grid.select(e.target.closest("tr"));
+    EntityId = dataItem.EntityID;
+    var WorkflowTypeID = dataItem.WorkFlowTypeID;
+    var url = "";
+    switch (WorkflowTypeID) {
+        case 1://EncourageAcademic
+            url = '@Url.Action("EARequestEdit", "EncourageAcademic", new { area = "Welfare" })/' + EntityId;
+            break;
+        case 2://Ruling
+            url = '@Url.Action("RULRequestEdit", "RulInfo", new { area = "Rulings" })/' + EntityId;
+            break;
+        case 3://Eblagh
+            url = '@Url.Action("_Index", "MyWorkFlow", new { area = "StaffPortal" })/' + EntityId;
+       default:
+    }
+    $('#RequestBody').load(url, function() {
+             $('#KGWorkDesk').css('height', '15%');
+             $('#KGWorkDesk .k-grid-content').css("height", "unset");
+        HideOtherKendoGridRow('KGWorkDesk', dataItem.uid, 'RequestPanel');
+        $(".action").hide();
+        $(".k-grid-toolbar").hide();
+     //   ChangeFormStatus(false);
+        //$("div#KTWelFareCenter ul li:nth-child(5)").hide();
+        //showSteps();
+        //$("#welFareCenterRulse").empty();
+        //showRulse().appendTo($("#welFareCenterRulse"));
+        //TourParticipantControled = false;
+    });
+}
+
+
+function ManageAccessToControl()
+{
+        $('.editFunctionality').each(function() {
+                $(this).hide();
+    });
+}
+
+
+
+
+
+
+
+
+
+
+
+    function AllowedRelationshipID_fk_onChange(e) {
+    if (getSelectedRow("KGTourParticipant") == null) {
+    return;
+    }
+    getSelectedRow("KGTourParticipant").AllowedRelationshipID_fk = parseInt(e.sender.value());
+    }
+
+
+
+
+
+
+    var rowNumber = 0;
+
+    function resetRowNumber(e) {
+    rowNumber = 0;
+    }
+
+    function renderNumber(data) {
+    return ++rowNumber;
+    }
+
+
+
+
+
+
+
+
+            function KGRequestParaph_parameter() {
+            var param1 = getSelectedRow("KGWorkDesk").RequestID;
+            return {
+            ReqID: param1
+            };
+            }
+            function KGRequestParaph_ParaphEdit(dataItem)
+            {
+            if ((('@User.IsInRole("RefahExpert")' == 'True') || ('@User.IsInRole("admin")' == 'True')) && (!dataItem.IsSeen)) {
+            return true;
+            }
+            return false;
+            }
+
+    function KBSubmitReport_OnClick() {
+        var formContainer = $("#__TravelEventIndexForm");
+        $.ajax({
+            url: "@Url.Action("Create", "TravelEvent", new { area="Public"})",
+            type: 'post',
+            data: formContainer.serialize(),
+            success: function (data) {
+                    if (data.isok==1)
+                        confirmationWorkDeskMessage();
+                },
+            error: function (jqXHR, textStatus, errorThrown) {
+                }
+            });
+    }
+    function telerikGridAjaxErrorhandler(args, myGridId) {
+        var message = "";
+        if (args.errors) {
+            for (var error in args.errors) {
+                $.each(args.errors[error].errors, function () {
+                    message += this + "\n";
+                });
+            }
+            $("#notification").data("kendoNotification").show({
+                title: "خطا",
+                message: message
+            }, "error");
+        }
+    }
+
+
+
+
+
+
+    function ShowAllKendoGridRow(gridName) {
+        $('#' + gridName + ' .k-grid-content tr').each(function () {
+            $(this).show();
+        });
+        $("#" + gridName + " .k-grid-toolbar").show();
+        $("#" + gridName + " .k-pager-wrap").show();
+        $("section.content").addClass("content-body")
+    }
+
+
+
+
+        var EntityId = 0;
+    //to show attach list as readonly
+
+    function showDocumentDialog() {
+        var EntityName = "درخواست";
+
+        if (EntityId <= 0) {
+            Alert('fa fas fa-exclamation-triangle', 'اخطار', 'لطفا جهت انجام عملیات پیوست یک ' + EntityName + ' را انتخاب نمایید.', 'red', '', null);
+            return;
+        }
+
+        openDialog("WLF.TBL_EncourageAcademic", EntityId, true);
+    }
+
+
+
+
+
+         //در كارتابل و  فرم عملیات مالی استفاده می شود
+         function fillPayPermission2(payPermissionId) {
+             var urlPayPersmission = '/IncomeOperation/PayPermission/GetPayPermission?payPermissionID=' + payPermissionId;
+             // alert(urlPayPersmission);
+
+             $.ajax({
+                 url: urlPayPersmission,
+                 error: function (xhr) {
+                     alert('خطا : ');
+                 },
+                 success: function (result) {
+                     if (result) {
+
+                         ////پارامتر ورودی گرید بدهی مجوز نحوه پرداخت
+                         //debitIDSearch = result.TreDebitId;
+                         //try { $("#DebitIncomesGrid").data("kendoGrid").dataSource.read(); } catch (e) { }
+                         //try { $("#ChequeGrid").data("kendoGrid").dataSource.read(); } catch (e) { }
+                         //try { $("#IncomeDiscountGrid").data("kendoGrid").dataSource.read(); } catch (e) { }
+                         //try { $("#TahatorsGrid").data("kendoGrid").dataSource.read(); } catch (e) { }
+
+                         ////تب مجوز نحوه پرداخت
+                         //$('#DabirNo').val(result.DabirNo);
+                         //$('#DabirDate').val(result.DabirDate);
+                         //$('#TotalCashAmount').val(result.TotalCashAmount);
+                         //$('#CorrespondenceTitle').val(result.CorrespondenceTitle);
+                         //$('#CorrespondenceFile').val(result.CorrespondenceFile);
+                         ////تب صورتحساب
+                         //$('#TreDebitId').val(result.TreDebitId);
+                         //$('#DebitDatePayPermision').val(result.DebitDatePayPermision);
+                         //$('#DebitAmountPayPermision').val(result.DebitAmountPayPermision);
+                         ////مانده بدهی
+                         //$('#AmountDebtBalance').val(result.DebitRemainsAmount);
+                         //$('#DescDebtBalance').val(result.DebitRemainsDescription);
+
+
+
+                         //پارامتر ورودی گرید بدهی مجوز نحوه پرداخت
+                         debitIDSearch = result.TreDebitId;
+                         $("#DebitIncomesGrid").data("kendoGrid").dataSource.read();
+                         $("#ChequeGrid").data("kendoGrid").dataSource.read();
+                         $("#IncomeDiscountGrid").data("kendoGrid").dataSource.read();
+                         $("#TahatorsGrid").data("kendoGrid").dataSource.read();
+
+                         //تب مجوز نحوه پرداخت
+                         $('#DabirNo').val(result.DabirNo);
+                         $('#DabirDate').val(result.DabirDate);
+                         $('#TotalCashAmount').data("kendoNumericTextBox").value(result.TotalCashAmount);
+                         $('#CorrespondenceTitle').val(result.CorrespondenceTitle);
+                         $('#CorrespondenceFile').val(result.CorrespondenceFile);
+
+                         //مانده بدهی
+                         $('#AmountDebtBalance').data("kendoNumericTextBox").value(result.DebitRemainsAmount);
+                         $('#DescDebtBalance').val(result.DebitRemainsDescription);
+
+                         //تب صورتحساب
+                         $('#TreDebitId').val(result.TreDebitId);
+                         $('#DebitDate').val(result.DebitDate);
+                         $('#DebitAmount').val(result.DebitAmount);
+                     }
+                 }
+             });
+         }
+
+
+
+         function fillchequePermission2(ChequeOprPermissionId, dataItem) {
+             var urlPayPersmission = '/CheckOperation/ChequeOprPermissions/GetChequeOprPermission?ChequeOprPermissionId=' + ChequeOprPermissionId;
+             // alert(urlPayPersmission);
+             ChqPermissionType = dataItem.entitytype;
+             $.ajax({
+                 url: urlPayPersmission,
+                 error: function (xhr) {
+                     alert('خطا : ');
+                 },
+                 success: function (result) {
+                     if (result) {
+
+
+
+
+
+                         //پارامتر ورودی گرید بدهی مجوز نحوه پرداخت
+                         //  debitIDSearch = result.TreDebitId;
+                         // try { $("#DebitIncomesGrid").data("kendoGrid").dataSource.read(); } catch (e) { }
+                         /*   try { $("#ChequeGrid").data("kendoGrid").dataSource.read(); } catch (e) { }
+                           try { $("#IncomeDiscountGrid").data("kendoGrid").dataSource.read(); } catch (e) { }
+                           try { $("#TahatorsGrid").data("kendoGrid").dataSource.read(); } catch (e) { }
+                           */
+                         //
+
+                         $('#DabirRegisterNo').val(result.DabirRegisterNo);
+                         $('#FileNo').val(result.FileNo);
+                         $('#DabirNo').val(result.DabirNo);
+                         $('#DabirDate').val(result.DabirDate);
+                         //تب صورتحساب
+                         if (ChqPermissionType == 1114 || ChqPermissionType == 1116 || ChqPermissionType == 1115 || ChqPermissionType == 1117) {
+                             //    $("#DDLChqPermissionType").data("kendoDropDownList").value(ChqPermissionType);
+                             $("#DabirRegisterNo").val(dataItem.DabirNo);
+                             $("#DabirDate").val(dataItem.DabirDate);
+                             $("#DabirNo").data("kendoNumericTextBox").value(dataItem.DabirId);
+                             $("#FileNo").val(dataItem.FileNo);
+                             $("#TreDebitIdChequeOprPermission").val(dataItem.TreDebitId);
+                             $("#TreFileIdHidden").val(dataItem.TreFileId);
+                             $("#PersonName").val(dataItem.FullnamePerson);
+                             $("#Description").val(dataItem.Description);
+                             $("#ZoneName").data("kendoMaskedTextBox").value(dataItem.ZName);
+                             $("#ChequeGrid").data("kendoGrid").dataSource.read();
+                             if (ChqPermissionType == 1114) {
+                                 $("#ChequeExtenssionGrid").data("kendoGrid").dataSource.read();
+                             }
+
+                         }
+                         else if (ChqPermissionType == 1113) {
+                             //   $("#DDLChqPermissionType").data("kendoDropDownList").value(ChqPermissionType);
+                             $("#DabirRegisterNo").val(dataItem.DabirNo);
+                             $("#DabirDate").val(dataItem.DabirDate);
+                             $("#DabirNo").data("kendoNumericTextBox").value(dataItem.DabirId);
+                             $("#FileNo").val(dataItem.FileNo);
+                             $("#TreDebitIdChequeOprPermission").val(dataItem.TreDebitId);
+                             $("#TreFileIdHidden").val(dataItem.TreFileId);
+                             $("#PersonName").val(dataItem.FullnamePerson);
+                             $("#Description").val(dataItem.Description);
+                             $("#CashAmount").data("kendoNumericTextBox").value(dataItem.CashAmount);
+                             $("#ZoneName").data("kendoMaskedTextBox").value(dataItem.ZName);
+                             $("#ChequeGrid").data("kendoGrid").dataSource.read();
+                             $('#ChequeChangesGrid').data("kendoGrid").dataSource.read()
+
+                         }
+                     }
+                 }
+             });
+         }
+
+
+         function KGWorkDeskDoc_ApproveAccess() {
+             return true;
+         }
+         function KGWorkDeskDoc_OnConfirmation(e) {
+             var item = this.dataItem($(e.currentTarget).closest("tr"));
+             dataItem = item;
+             confirmationWorkDeskDocMessage();
+         }
+
+    function confirmationWorkDeskDocMessage()
+    {
+        if (dataItem ==null || dataItem + "" == "undefined")
+    {
+        dataItem = getSelectedRow("KGWorkDeskDoc");
+    }
+        $.ajax({
+        url: '@Url.Action("SendToWorkFlow", "MyWorkFlow")',
+            data:
+        {
+                    'workFlowType': dataItem.WorkFlowTypeID ,
+                    'workFlowStepType': 'NextLevel',
+                    'requestID': dataItem.RequestID,
+                    'currentStepID': dataItem.WorkFlowStepID,
+                    'sendOrMessage': 'Message',
+                    'externalCondition':'Approve'
+            },
+            datatype: "json",
+            type: "POST",
+            success: function(res) {
+
+            // در صورتی كه درخواست قبلا ثبت نهایی شده باشد اجازه تغییر بر روی درخواست را نمی دهد
+            if (res.data[0].Message == 'ExceptionMessage')
+            {
+                Alert('fa fa-frown-o', ' خطا ', res.data[0].Message, 'red', '', null);
+            }
+            // در صورتی كه ایرادی جهت ارسال به مرحله بعد یا ثبت نهایی وجود نداشته باشد
+            else
+            {
+                ConfirmAlertCustom('تایید درخواست', res.data[0].Message, confirmationWorkDeskDocSend, "بله", "خیر");
+            }
+        },
+            error: function(ex) {
+            //console.log(ex.statusText);
+        }
+    });
+}
+function confirmationWorkDeskDocSend()
+{
+        $.ajax({
+        url: '@Url.Action("SendToWorkFlow", "MyWorkFlow")',
+            data:
+        {
+                'workFlowType': dataItem.WorkFlowTypeID,
+                'workFlowStepType': 'NextLevel',
+                'requestID': dataItem.RequestID,
+                'currentStepID': dataItem.WorkFlowStepID,
+                'sendOrMessage': 'Send',
+                'externalCondition': 'Approve'
+            },
+            datatype: "json",
+            type: "POST",
+            success: function (res) {
+                if (res.isok) {
+
+
+            if (res.data[0].Message == 'Error')
+            {
+                Alert('fa fa-frown-o', ' خطا ', res.data[0].Message, 'red', '', null);
+            }
+            else
+            {
+                Alert('fa fa-smile-o', 'موفق', res.data[0].Message, 'green', '', null);
+
+
+                 //  $("#KGWorkDeskDoc").data("kendoGrid").dataSource.data([]);
+               $("#KGWorkDeskDoc").data("kendoGrid").dataSource.read();
+
+                RequestBody_onClose();
+                    }
+                } else {
+                    Alert('fa fa-frown-o', ' خطا ', res.msg, 'red', '', null);
+                }
+        },
+            error: function(ex) {
+            //console.log(ex.statusText);
+        }
+    });
+}
+         function KGWorkDeskDoc_RejectAccess() {
+             return true;
+         }
+
+////////////////////////////////////////////////////////////////////////////////////////////////
+function KGWorkDeskDoc_OnReject(e)
+{
+    var item = this.dataItem($(e.currentTarget).closest("tr"));
+    dataItem = item;
+    rejectWorkDeskDocMessage();
+}
+
+function rejectWorkDeskDocMessage()
+{
+        $.ajax({
+        url: '@Url.Action("SendToWorkFlow", "MyWorkFlow")',
+            data:
+        {
+                'workFlowType': dataItem.WorkFlowTypeID,
+                'workFlowStepType': 'PreviousLevel',
+                'requestID': dataItem.RequestID,
+                'currentStepID': dataItem.WorkFlowStepID,
+                'sendOrMessage': 'Message',
+                'externalCondition': ''
+            },
+            datatype: "json",
+            type: "POST",
+            success: function(res) {
+            // در صورتی كه درخواست قبلا ثبت نهایی شده باشد اجازه تغییر بر روی درخواست را نمی دهد
+            if (res.data[0].ExceptionMessage == 'ExceptionMessage')
+            {
+                Alert('fa fa-frown-o', ' خطا ', res.data[0].Message, 'red', '', null);
+            }
+            else if (res.data[0].EngMessage == 'NoExsistPreviousStep')
+            {
+                Alert('fa fa-frown-o', ' خطا ', res.data[0].Message, 'red', '', null);
+            }
+            // در صورتی كه ایرادی وجود نداشته باشد
+            else
+            {
+                //ConfirmAlertCustom('رد درخواست جهت ویرایش', res.data[0].Message, rejectWorkDeskSend, "بله", "خیر");
+                ConfirmAlertWithTextArea('رد درخواست جهت ویرایش', res.data[0].Message, "", rejectWorkDeskDocSend, null, "بله", "rejectWorkDeskDsc", "پاراف")
+                    RequestBody_onClose();
+            }
+        },
+            error: function(ex) {
+            //console.log(ex.statusText);
+        }
+    });
+}
+function rejectWorkDeskDocSend()
+{
+        $.ajax({
+        url: '@Url.Action("SendToWorkFlow", "MyWorkFlow")',
+            data:
+        {
+                'workFlowType': dataItem.WorkFlowTypeID,
+                'workFlowStepType': 'PreviousLevel',
+                'requestID': dataItem.RequestID,
+                'currentStepID': dataItem.WorkFlowStepID,
+                'sendOrMessage': 'Send',
+                'externalCondition': '',
+                'paraph': $('#rejectWorkDeskDsc').val()
+            },
+            datatype: "json",
+            type: "POST",
+            success: function(res) {
+
+            if (res.data[0].ExceptionMessage == 'ExceptionMessage')
+            {
+                Alert('fa fa-frown-o', ' خطا ', res.data[0].Message, 'red', '', null);
+            }
+            else
+            {
+                Alert('fa fa-smile-o', 'موفق', res.data[0].Message, 'green', '', null);
+
+                    $("#KGWorkDeskDoc").data("kendoGrid").dataSource.read();
+            }
+        },
+            error: function(ex) {
+            //console.log(ex.statusText);
+        }
+    });
+}
+
+
+function KGWorkDeskDoc_ShowReqAccess() {
+    return true;
+}
+
+function KGWorkDeskDoc_OnShowReq(e) {
+
+    makeComponentDisabled('container-fluid', true);
+    var grid = $("#KGWorkDeskDoc").data("kendoGrid");
+    var dataItem = grid.dataItem(e.target.closest("tr"));
+    grid.select(e.target.closest("tr"));
+    EntityId = dataItem.EntityID;
+    var WorkflowTypeID = dataItem.WorkFlowTypeID;
+    var url = "";
+
+    switch (WorkflowTypeID) {
+        case 5://Doc
+            url = '@Url.Action("TreDocPartial", "TreDocOprtH", new { area = "TreDocOperation" })?id=' + EntityId;
+            break;
+        default:
+    }
+
+    $('#RequestBody').load(url, function () {
+
+             $('#KGWorkDeskDoc').css('height', '15%');
+             $('#KGWorkDeskDoc .k-grid-content').css("height", "unset");
+             HideOtherKendoGridRow('KGWorkDeskDoc', dataItem.uid, 'RequestPanel');
+
+
+             if (WorkflowTypeID == 5) {
+               //  fillDocOperation(EntityId, dataItem);
+               //  $("#ChequeGrid").data("kendoGrid").dataSource.read();
+                // $("#ChequeChangesGrid").data("kendoGrid").dataSource.read();
+             }
+        //ManageAccessToControl();
+        //$("div#KTWelFareCenter ul li:nth-child(5)").hide();
+        //showSteps();
+        // $("#welFareCenterRulse").empty();
+        //showRulse().appendTo($("#welFareCenterRulse"));
+        //TourParticipantControled = false;
+        $(".action").hide();
+        $(".k-grid-toolbar").hide();
+       // ChangeFormStatus(false);
+    });
+ }
+
+
+
+
+
+
+         function KGWorkDeskDoc_EditReqAccess() {
+             return true;
+         }
+         function KGWorkDeskDoc_OnEditReq(e) {
+
+         }
+
+         function onChangeWorkflowType() {
+
+             var param4 = $("#WFTypeDDL").data("kendoDropDownList").value();
+
+             if (param4 == 0) {
+                 document.getElementById("div_cartabletype_5").style.display = "none";
+                 document.getElementById("div_cartabletype_3_4").style.display = "none";
+             }  if (param4 == 1) {
+                 document.getElementById("div_cartabletype_5").style.display = "none";
+                 document.getElementById("div_cartabletype_3_4").style.display = "block";
+             }
+             else if(param4 == 2)
+
+             {
+             document.getElementById("div_cartabletype_5").style.display = "block";
+             document.getElementById("div_cartabletype_3_4").style.display = "none";
+         }
+
+
+         }
+</script>
+
+
+<script src="~/Areas/IncomeOperation/Views/TreIncomeFile/Tabs/PayPermissions/_PayPermissions.js"></script>
+<script src="~/Areas/IncomeOperation/Views/TreIncomeFile/Tabs/_ElectronicIncomeBills.js"></script>
+<script src="~/Areas/IncomeOperation/Views/TreIncomeFile/Tabs/_IncomeTaxDebits.js"></script>
+<script src="~/Areas/IncomeOperation/Views/TreIncomeFile/Tabs/PayPermissions/Tabs/_ChequeSearch.js"></script>
+<script src="~/Areas/IncomeOperation/Views/TreIncomeFile/Tabs/PayPermissions/Tabs/_Tahators.js"></script>
+<script src="~/Areas/IncomeOperation/Views/TreIncomeFile/Tabs/PayPermissions/Tabs/_IncomeDiscount.js"></script>
+<script src="~/Areas/IncomeOperation/Views/TreIncomeFile/Tabs/PayPermissions/Tabs/_DebtBalance.js"></script>
+<script src="~/Areas/CheckOperation/Views/ChequeOprPermissions/Index.js"></script>
+<script src="~/Areas/CheckOperation/Views/ChequeOprPermissions/Tabs/_ChequeLost.js"></script>
+<script src="~/Areas/CheckOperation/Views/ChequeOprPermissions/Tabs/_ChequeChanxInfo.js"></script>
+
+<script src="~/Areas/CheckOperation/Views/ChequeOprPermissions/Tabs/_ChequeReturns.js"></script>
+<script src="~/Areas/CheckOperation/Views/ChequeOprPermissions/Tabs/_ReTransitCheque.js"></script>
+
+<script src="~/Areas/TreDocOperation/Views/TreDocH/Tabs/_Cash.js"></script>
+<script src="~/Areas/TreDocOperation/Views/TreDocH/Tabs/_Installment.js"></script>
+<script src="~/Areas/TreDocOperation/Views/TreDocH/Tabs/_Losts.js"></script>
+<script src="~/Areas/TreDocOperation/Views/TreDocH/Tabs/_Opening.js"></script>
+<script src="~/Areas/TreDocOperation/Views/TreDocH/Tabs/_Returns.js"></script>
+<script src="~/Areas/TreDocOperation/Views/TreDocH/Tabs/_Tahator.js"></script>
+<script src="~/Areas/TreDocOperation/Views/TreDocH/Tabs/_Vakhast.js"></script>
+<script src="~/Areas/TreDocOperation/Views/TreDocH/Tabs/_Discount.js"></script>
+<script src="~/Areas/TreDocOperation/Views/TreDocH/Tabs/_Extension.js"></script>
+<script src="~/Areas/TreDocOperation/Views/TreDocH/Tabs/_Closing.js"></script>
+<script src="~/Areas/TreDocOperation/Views/TreDocH/Tabs/_Change.js"></script>
+<script src="~/Areas/TreDocOperation/Views/TreDocH/Tabs/_CollectReturn.js"></script>
+<script src="~/Areas/TreDocOperation/Views/TreDocH/Index.js"></script>

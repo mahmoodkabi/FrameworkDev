@@ -1,0 +1,38 @@
+﻿@using Kendo.Mvc.UI
+@using FrameworkDev.Web.Helpers.KendoMVC
+@using FrameworkDev.Web.Areas.Management.Models
+
+@{
+    ViewBag.Title = "کاربران";
+}
+
+@(Html.MyGrid<VM_User>("UsersGrid", null, defaultToolbar: true, gridFilterMode: GridFilterMode.Row)
+    .Columns(columns =>
+    {
+        columns.Bound(c => c.UserId).Width(80);
+        columns.Bound(c => c.UserName).Width(140);
+        columns.Bound(c => c.FirstName).Width(140);
+        columns.Bound(c => c.LastName).Width(140);
+        columns.Bound(c => c.Email).Width(140);
+        columns.Bound(c => c.IsActive).ClientTemplate("#if (IsActive) {#<span class='label label-success'>فعال</span>#} else {#<span class='label label-danger'>غیرفعال</span>#}#").Width(50);
+    }).Scrollable(x => x.Height("auto"))
+  //  .HtmlAttributes(new { style = "height: 400px" })
+    .Events(e => e.Change("UsersGrid_onChange"))
+    .DataSource(dataSource => dataSource
+    .WebApi()
+    .Model(model => model.Id(p => p.UserId))
+    .Read(read => read.Url(Url.HttpRouteUrl("DefaultApi", new { controller = "UsersApi" })))
+    .Events(e => e.Error("function(args){kendoGridAjaxErrorhandler(args,'UsersGrid');}").RequestEnd("onKendoDSRequestEnd"))
+    )
+)
+
+@(Html.Kendo().TabStrip().Name("tabstrip")
+    .Animation(animation => animation.Open(effect => effect.Fade(FadeDirection.In)))
+    .Items(tabstrip =>
+    {
+        tabstrip.Add().Text("اطلاعات كاربر").HtmlAttributes(new { style = "width:150px;" }).Selected(true).Content(@Html.Partial("Tabs/_UserInfo").ToHtmlString());
+        //tabstrip.Add().Text("دسترسی به منطقه").HtmlAttributes(new { style = "width:150px;" }).Content(@Html.Partial("Tabs/_UserZones").ToHtmlString());
+    })
+)
+
+<script src="/Areas/Management/Views/Users/Index.js"></script>

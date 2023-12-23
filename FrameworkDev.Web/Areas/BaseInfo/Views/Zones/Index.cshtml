@@ -1,0 +1,47 @@
+﻿@model FrameworkDev.Web.Areas.BaseInfo.Models.VM_ZoneInfo
+@using Kendo.Mvc.UI
+@{
+    ViewBag.Title = "مناطق";
+    var currentUser = User as FrameworkDev.Web.Helpers.Authentication.CustomPrincipal;
+    ViewBag.Description = "";
+}
+
+<form id='ZoneForm' class='Zone' style='margin:15px; background-color:white;'>
+    <fieldset class="bocrud-subgroup" style="padding: 10px !important;background-color: white !important;">
+        <div id="ButtonBar" class="ButtonBar">
+            @if (currentUser.HasPermissionUI("BAS:ZON:C"))
+            {@(Html.Kendo().Button().Name("btnNewRowZone").HtmlAttributes(new { type = "button" }).Icon("add").Content("ایجاد").Events(ev => ev.Click("New")) )}
+            @if (currentUser.HasPermissionUI("BAS:ZON:U"))
+            {@(Html.Kendo().Button().Name("btnEditRowZone").HtmlAttributes(new { type = "button" }).Icon("edit").Content("ویرایش").Events(ev => ev.Click("Edit")) )}
+            @if (currentUser.HasPermissionUI("BAS:ZON:D"))
+            {@(Html.Kendo().Button().Name("btnDeleteZone").HtmlAttributes(new { type = "button" }).Icon("delete").Content("حذف").Events(ev => ev.Click("Delete")) )}
+            @(Html.Kendo().Button().Name("btnAcceptChangesZone").HtmlAttributes(new { type = "button" }).Icon("save").Content("ذخیره").Events(ev => ev.Click("Save")) )
+            @(Html.Kendo().Button().Name("btnCancelChangesZone").HtmlAttributes(new { type = "button" }).Icon("cancel").Content("انصراف").Events(ev => ev.Click("Cancel")) )
+        </div>
+    </fieldset>
+    <fieldset class="bocrud-subgroup" style="padding: 10px !important;background-color: white !important;">
+        <div class='container'>
+            <div class='row '>
+                <div class='col-md-3' style='height:500px;'>
+                    <div id='ZoneTreeview' class='k-header k-treeview CellTree '>
+                        @* this div is for tree view in ajax show *@
+                    </div>
+                </div>
+                <div class='col-md-9'>
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class=" rTable">
+                        @Html.HiddenFor(x => x.ParentId)
+                        @Html.EditorFor(x => x.Name, "IGString", new { @id = "Name" })
+                        @Html.EditorFor(x => x.Code, "IGString", new { @id = "Code" })
+                        @Html.EditorFor(x => x.TelNo, "IGString", new { @id = "TelNo" })
+                        @Html.EditorFor(x => x.Address, "IGString", new { @id = "Address" })
+                        @Html.EditorFor(x => x.WorkShopNo, "IGString", new { @id = "WorkShopNo" })
+                    </div>
+                </div>
+            </div>
+        </div>
+    </fieldset>
+</form>
+
+<script src="/Areas/BaseInfo/Views/Zones/Index.js"></script>

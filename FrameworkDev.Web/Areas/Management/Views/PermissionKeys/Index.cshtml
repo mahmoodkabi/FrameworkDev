@@ -1,0 +1,17 @@
+﻿@using Kendo.Mvc.UI
+@using FrameworkDev.Web.Helpers.KendoMVC
+@using FrameworkDev.Web.Models
+
+@{
+    ViewBag.Title = "دسترسی ها";
+}
+
+@(Html.MyGrid<VM_PermissionTree>("PermissionKeysGrid", null)
+    .Columns(columns => { columns.AutoGenerate(true); })
+    .ToolBar(toolbar =>
+    {
+        toolbar.Excel().Text(string.Empty);
+    })
+    .DataSource(dataSource => dataSource.WebApi().PageSize(1000).Model(model => model.Id(p => p.PermissionKey))
+    .Read(method => method.Url(Url.HttpRouteUrl("DefaultApi", new { controller = "PermissionKeysApi" }))))
+    .HtmlAttributes(new { @style = "position:absolute; top:50px; bottom:25px; height:auto;" }) )

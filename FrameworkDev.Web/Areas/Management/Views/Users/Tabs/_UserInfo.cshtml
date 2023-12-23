@@ -1,0 +1,80 @@
+﻿@using Kendo.Mvc.UI;
+@using FrameworkDev.Web.Areas.Management.Models;
+
+@model VM_User
+
+@Html.AntiForgeryToken()
+@Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+@{
+    var currentUser = User as FrameworkDev.Web.Helpers.Authentication.CustomPrincipal;
+}
+
+<form id="frmUserInfo" style="height:270px;">
+    <fieldset class="bocrud-subgroup" style="background-color:white;padding:2px; margin-top:10px;">
+        <div class="col-md-10">
+            <div id="rgnbtnmains" style="display:inline-block;">
+                @if (currentUser.HasPermissionUI("MNG:USR:C"))
+                {
+                    @(Html.Kendo().Button().Name("btnAdd").HtmlAttributes(new { type = "button" }).Icon("add").Content("ایجاد").Events(ev => ev.Click("btnAdd_onClick")))
+                }
+                @if (currentUser.HasPermissionUI("MNG:USR:U"))
+                {
+                    @(Html.Kendo().Button().Name("btnEdit").HtmlAttributes(new { type = "button" }).Icon("edit").Content("ویرایش").Events(ev => ev.Click("btnEdit_onClick")))
+                }
+                @if (currentUser.HasPermissionUI("MNG:USR:D"))
+                {
+                    @(Html.Kendo().Button().Name("btnDelete").HtmlAttributes(new { type = "button" }).Icon("delete").Content("حذف").Events(ev => ev.Click("btnDelete_onClick")))
+                }
+            </div>
+            <div id="rgnbtnactions" style="display:none;">
+                @(Html.Kendo().Button().Name("btnSave").HtmlAttributes(new { type = "button" }).Icon("save").Content("ذخیره").Events(ev => ev.Click("btnSave_onClick")))
+                @(Html.Kendo().Button().Name("btnCancel").HtmlAttributes(new { type = "button" }).Icon("cancel").Content("انصراف").Events(ev => ev.Click("btnCancel_onClick")))
+            </div>
+        </div>
+    </fieldset>
+    <div class="col-md-12">
+        <div class="col-md-6 col-xs-12">
+            @Html.EditorFor(x => x.UserId, "IGStringTextBox", new { @id = "UserId" })
+        </div>
+        <div class="col-md-6 col-xs-12">
+            @Html.EditorFor(x => x.UserName, "IGStringTextBox", new { @id = "UserName" })
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-6 col-xs-12">
+            @Html.EditorFor(x => x.FirstName, "IGStringTextBox", new { @id = "FirstName" })
+        </div>
+        <div class="col-md-6 col-xs-12">
+            @Html.EditorFor(x => x.LastName, "IGStringTextBox", new { @id = "LastName" })
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-6 col-xs-12">
+            @Html.EditorFor(x => x.Password, "IGStringTextBoxPassword", new { @id = "Password" })
+        </div>
+        <div class="col-md-6 col-xs-12">
+            @Html.EditorFor(x => x.PasswordConfirm, "IGStringTextBoxPassword", new { @id = "PasswordConfirm" })
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-6 col-xs-12">
+            @Html.EditorFor(x => x.Email, "IGStringTextBoxEMail", new { @id = "Email" })
+        </div>
+        <div class="col-md-6 col-xs-12">
+            @Html.EditorFor(model => model.IsActive, "IGBool", new { @id = "IsActive" })
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-12">
+            @*@Html.EditorFor(x => x.CitizenID, "DropDownCitizenByCitizenID", new { @id = "CitizenID" })*@
+        </div>
+    </div>
+    <div class="col-md-12">
+        <div class="col-md-12">
+            @Html.EditorFor(x => x.Roles, "RolesLookup", new { @id = "Roles" })
+        </div>
+    </div>
+</form>
+
+<script src="/Areas/Management/Views/Users/Tabs/_UserInfo.js"></script>

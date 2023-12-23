@@ -1,0 +1,55 @@
+﻿@using Kendo.Mvc.UI
+@using FrameworkDev.Web.Helpers.KendoMVC
+@using FrameworkDev.Web.Areas.Management.Models;
+
+@{
+    ViewBag.Title = "دسترسی به مناطق ";
+}
+
+<script src="/Areas/Management/Views/Users/Tabs/_UserZones.js"></script>
+
+@(Html.MyGrid<VM_UserZones>("UserZonesGrid", pageable: false)
+                    .Columns(columns =>
+                    {
+                        columns.ForeignKey(c => c.USZZoneId_fk, (System.Collections.IEnumerable)ViewData["ZoneList"], "ZoneId", "Name").EditorTemplateName("DropDown").Width(200);
+                        //columns.Bound(c => c.USZActive).ClientTemplate("#if (USZActive) {#<span class='label label-success'>فعال</span>#} else {#<span class='label label-danger'>غیرفعال</span>#}#").Width(110);
+                        columns.Command(command => { command.Destroy().Text("حذف"); }).Width(150);
+                    }).Scrollable(x => x.Height("auto"))
+                    .ToolBar(toolbar =>
+                    {
+                        toolbar.Custom().Url("javascript:void()").IconClass("k-icon k-i-add").Name("showZoneDialog").Text("انتخاب منطقه").HtmlAttributes(new { @onclick = "showZoneDialog(); return false;" });
+                    })
+                 //   .HtmlAttributes(new { style = "height:270px;" })
+                    .DataSource(dataSource => dataSource
+                     //.WebApi()
+                     //.Model(model => model.Id(p => p.UserZoneID))
+                     //.Read(a => a.Url(Url.HttpRouteUrl("DefaultApi", new { controller = "UserZonesApi" })).Data("additionalDataUser"))
+                     //.Update(a => a.Url(Url.HttpRouteUrl("DefaultApi", new { controller = "UserZonesApi", id = "{0}" })))
+                     //.Destroy(a => a.Url(Url.HttpRouteUrl("DefaultApi", new { controller = "UserZonesApi", id = "{0}" })))
+                     //.Create(a => a.Url(Url.HttpRouteUrl("DefaultApi", new { controller = "UserZonesApi" })))
+                     .Ajax()
+                   .Model(model => model.Id(p => p.UserZoneID))
+                        .Read(read => read.Action("LoadUserZones", "UserZones", new { area = "Management" }).Data("additionalDataUser"))
+                        .Create(create => create.Action("AddUserZonesSave", "UserZones", new { area = "Management" }).Data("additionalDataUser"))
+                        .Update(update => update.Action("EditUserZonesSave", "UserZones", new { area = "Management" }).Data("additionalDataUser"))
+                        .Destroy(destroy => destroy.Action("DeleteUserZonesSave", "UserZones", new { area = "Management" }).Data("additionalDataUser"))
+
+
+
+                    .Events(events => events.Error("function(args){kendoGridAjaxErrorhandler(args,'UserZonesGrid');}").RequestEnd("onKendoDSRequestEnd"))
+                    )
+)
+
+
+
+
+@(Html.Kendo().Dialog().Name("ZoneDialog").Visible(false).Title("انتخاب منطقه").
+        Content(Html.Partial("Tabs/_ZonesDialog").ToHtmlString()).Width(800).Height(600).Modal(true).
+        Closable(false).Actions(actions => { actions.Add().Text("تائید").Primary(true).Action("ZoneDialog_Ok");
+        actions.Add().Text("انصراف").Action("ZoneDialog_Cancel"); }).Events(ev => ev.Close("ZoneDialog_Close").Open("ZoneDialog_Open")) )
+
+
+
+
+
+ 

@@ -1,0 +1,13 @@
+﻿@using Kendo.Mvc.UI
+
+@model List<int>
+
+<div class="rTableRow">
+    <div class="rTableHead k-header">
+        @Html.LabelFor(model => model, htmlAttributes: new { @class = "control-label", style = "min-width: 100px;" })
+    </div>
+    <div class="rTableCell">
+        @Html.Kendo().MultiSelectFor(model => model).DataSource(dataSource => dataSource.Read(read => { read.Url("/api/RolesApi/a/Lookup?_maxCount=100"); })).DataTextField("Text").DataValueField("Value").Placeholder("نقش های مورد نظر خود را انتخاب کنید !").HtmlAttributes(new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model, "", new { @class = "text-danger" })
+    </div>
+</div>

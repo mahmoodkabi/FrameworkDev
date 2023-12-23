@@ -1,0 +1,11 @@
+﻿http://localhost:6080/arcgis/
+http://localhost:6080/arcgis/rest/services
+
+http://localhost:6080/arcgis/manager/
+user: admin
+pass: 823Mk951*631
+
+
+
+
+

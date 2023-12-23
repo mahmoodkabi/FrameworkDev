@@ -1,0 +1,741 @@
+﻿body {
+    direction: rtl !important;
+    font-family: IRANSans !important;
+    font-size: 11px !important;
+}
+
+div {
+    box-sizing: border-box !important;
+}
+
+.k-tooltip-validation.k-invalid-msg {
+    display: inline-block;
+    position: relative;
+}
+
+.content {
+    padding-top: 18px !important;
+}
+
+.content-header-title {
+    width: 50%;
+    height: 50px !important;
+    overflow: hidden;
+    right: 0;
+    position: absolute;
+    margin-right: 30px;
+    font-size: 16px;
+    padding: 12px;
+    color: #ffffff;
+}
+
+.sidebar-menu li > a > .fa-angle-left {
+    position: absolute !important;
+    top: 50% !important;
+    left: 10px !important;
+    right: auto !important;
+    margin-top: -8px !important;
+}
+
+.content-body {
+    padding: 4px !important;
+    margin-top: 15px !important;
+}
+
+.center {
+    text-align: center;
+}
+
+.content-body > .k-grid {
+    margin: 4px !important;
+}
+
+tbody tr:hover {
+    cursor: pointer
+}
+
+.input-group {
+    margin: 4px;
+    border: 0 none;
+}
+
+.input-group-addon {
+    text-align: left;
+    min-width: 125px;
+    border: 0 none;
+    background-color: transparent;
+}
+
+.ui-datepicker-trigger[style*="opacity: 0.1"] {
+    display: none;
+}
+
+a[class*="inplace-button"][style*="opacity: 0.1"] {
+    display: none;
+}
+
+[data-name="md-persiandatetimepicker"] table.table td {
+    padding: 6px 0 6px 0 !important;
+    font-size: 14px !important;
+}
+
+[data-name="md-persiandatetimepicker"] button {
+    padding: 6px 0 6px 0 !important;
+    font-size: 14px !important;
+}
+
+.s-Common-PersianDateEditor {
+    direction: ltr;
+    text-align: center;
+    min-width: 100px !important;
+}
+
+.input-group-addon:first-child {
+    border-right: 0 !important;
+}
+
+input.IGMPDate {
+    text-align: center;
+}
+
+.k-tooltip-validation.k-invalid-msg {
+    display: inline-block;
+    position: relative;
+}
+
+.k-edit-form-container {
+    /*position: absolute;*/
+    width: 100% !important;
+    height: 100% !important;
+    overflow: hidden !important;
+}
+
+.k-window-content {
+    overflow: hidden !important;
+    margin: 7px 7px 45px 7px !important;
+    bottom: 0 !important;
+    top: 0 !important;
+}
+
+.k-rtl .k-edit-form-container .k-edit-buttons {
+    bottom: 0;
+    right: 0;
+    left: 0;
+    /*position: absolute;*/
+    width: 100%;
+    height: 28px;
+    padding: 3px;
+    z-index: 999;
+}
+
+.input-group-addon {
+    min-width: 200px;
+}
+
+.fullwidth {
+    width: 100% !important;
+}
+
+.rTable {
+    display: table;
+    width: 100%;
+}
+
+.rTableRow {
+    display: table-row;
+}
+
+.rTableHeading {
+    display: table-header-group;
+}
+
+.rTableHead {
+    display: table-cell;
+    padding-left: 3px !important;
+    padding-right: 3px !important;
+    border: 2.5px solid !important;
+    border-color: white !important;
+    display: run-in !important;
+    text-align: right !important;
+    margin: 10px 10px !important;
+    border-radius: 8px;
+}
+
+.rTableCell {
+    display: table-cell;
+    width: 100% !important;
+}
+
+.rTableCellNote {
+    display: table-cell;
+    padding: 3px 10px;
+    width: 30% !important;
+}
+
+.rTableHeading {
+    display: table-header-group;
+    background-color: #ddd;
+    font-weight: bold;
+}
+
+.rTableFoot {
+    display: table-footer-group;
+    font-weight: bold;
+    background-color: #ddd;
+}
+
+.rTableBody {
+    display: table-row-group;
+}
+
+.CellTree {
+    overflow: auto !important;
+    max-height: 100% !important;
+    min-height: 100% !important;
+    padding: 3px 10px;
+    border: .5px solid #ddd !important;
+    border-radius: 8px !important;
+    background-color: #8BC34A !important;
+}
+
+.rTable {
+    display: table;
+    width: 100%;
+}
+
+.rTableRow {
+    display: table-row;
+}
+
+.rTableHeading {
+    display: table-header-group;
+}
+
+.rTableHead {
+    display: table-cell;
+    padding-left: 3px !important;
+    padding-right: 3px !important;
+    border: 2.5px solid !important;
+    border-color: white !important;
+    display: run-in !important;
+    text-align: right !important;
+    margin: 10px 10px !important;
+    border-radius: 8px;
+}
+
+.rTableCell {
+    display: table-cell;
+    padding: 3px 10px;
+    text-align: right !important;
+}
+
+.rTableCellNote {
+    display: table-cell;
+    padding: 3px 10px;
+    text-align: right !important;
+}
+
+.rTableHeading {
+    display: table-header-group;
+    background-color: #ddd;
+    font-weight: bold;
+}
+
+.rTableFoot {
+    display: table-footer-group;
+    font-weight: bold;
+    background-color: #ddd;
+}
+
+.rTableBody {
+    display: table-row-group;
+}
+
+.CellTree {
+    overflow: auto !important;
+    max-height: 100% !important;
+    min-height: 100% !important;
+    padding: 3px 10px;
+    border: .5px solid #ddd !important;
+    border-radius: 8px !important;
+    background-color: #eee !important;
+    font-size: larger;
+}
+
+.ButtonBar {
+    border: 1px solid #68b1d2;
+    border-radius: 10px;
+    padding: 5px;
+    background-color: white;
+    text-align: right !important;
+    padding-top: 5px;
+}
+
+.k-layer {
+    width: inherit !important;
+}
+
+.kkk {
+    max-width: 800px;
+    overflow-x: scroll;
+    max-height: 800px;
+    overflow-y: scroll;
+}
+
+.bocrud-subgroup {
+    margin-bottom: 10px;
+    position: relative;
+    top: -15px;
+    padding-top: 10px;
+    padding-bottom: 10px;
+    border: solid 1px green;
+    border-radius: 7px;
+    background: #e6f9e2 !important;
+}
+
+.bocrud-control {
+    margin-bottom: 5px;
+    margin-top: 5px;
+}
+
+.Right {
+    float: right;
+}
+
+.Message {
+    display: table;
+    position: relative;
+    margin: 40px auto 0;
+    width: 100%;
+    color: #fff;
+    border-radius: 15px;
+    direction: rtl;
+}
+
+    .Message.is-hidden {
+        opacity: 0;
+        height: 0;
+        font-size: 0;
+        padding: 0;
+        margin: 0 auto;
+        display: block;
+    }
+
+.Message--orange {
+    background-color: #E5A300;
+}
+
+.Message--red {
+    background-color: #F56668;
+}
+
+.Message--green {
+    background-color: #5ED490;
+}
+
+.Message-icon {
+    display: table-cell;
+    vertical-align: middle;
+    width: 60px;
+    padding: 30px;
+    text-align: center;
+    background-color: rgba(0, 0, 0, 0.25);
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
+}
+
+    .Message-icon > i {
+        font-size: 30px;
+    }
+
+.Message-body {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+    .Message-body > h1 {
+        font-size: large;
+        text-align: right;
+        padding-right: 20px;
+        padding-top: 5px;
+    }
+
+    .Message-body > p {
+        font-size: smaller;
+        text-align: right;
+        padding-right: 20px;
+    }
+
+    .Message-body > span {
+        text-align: left;
+        padding-left: 15px;
+        font-size: x-small;
+    }
+
+.Message-button {
+    position: relative;
+    margin: 15px 5px -10px;
+    background-color: rgba(0, 0, 0, 0.25);
+    box-shadow: 0 3px rgba(0, 0, 0, 0.4);
+    border: none;
+    padding: 10px 15px;
+    font-size: 16px;
+    font-family: 'Source Sans Pro';
+    color: #fff;
+    outline: none;
+    cursor: pointer;
+}
+
+    .Message-button:hover {
+        background: rgba(0, 0, 0, 0.3);
+    }
+
+    .Message-button:active {
+        background: rgba(0, 0, 0, 0.3);
+        box-shadow: 0 0px rgba(0, 0, 0, 0.4);
+        top: 3px;
+    }
+
+.Message-close {
+    position: absolute;
+    background-color: rgba(0, 0, 0, 0.1);
+    color: #fff;
+    border: none;
+    outline: none;
+    font-size: 20px;
+    left: 0px;
+    top: 0px;
+    opacity: 0;
+    cursor: pointer;
+    border-top-left-radius: 15px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 15px;
+    border-bottom-left-radius: 5px;
+}
+
+.Message:hover .Message-close {
+    opacity: 1;
+}
+
+.Message-close:hover {
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.u-italic {
+    font-style: italic;
+}
+
+div.k-window-content {
+    height: auto !important;
+}
+
+#infoTemplate {
+    background: #E5A300 !important;
+    color: #ffffff;
+}
+
+.notify-info {
+    width: 300px;
+    height: auto;
+    direction: rtl;
+}
+
+    .notify-info h3 {
+        font-family: inherit;
+        margin: 5px;
+    }
+
+    .notify-info img {
+        float: right;
+        margin: 10px 10px 10px 10px;
+    }
+
+    .notify-info p {
+        margin: 0 !important;
+    }
+
+    .notify-info span {
+        margin-bottom: 5px;
+        float: left;
+        font-size: small;
+    }
+
+.k-notification-error.k-group {
+    background: #F56668;
+    color: #ffffff;
+}
+
+.notify-error {
+    width: 300px;
+    height: auto;
+    direction: rtl;
+}
+
+    .notify-error h3 {
+        font-family: inherit;
+        margin: 5px
+    }
+
+    .notify-error img {
+        float: right;
+        margin: 10px 10px 10px 10px;
+    }
+
+    .notify-error p {
+        margin: 0 !important;
+    }
+
+    .notify-error span {
+        margin-bottom: 5px;
+        float: left;
+        font-size: small;
+    }
+
+.k-notification-notify-success {
+    background: #5ED490;
+    color: #fff;
+}
+
+.notify-success {
+    width: 300px;
+    height: auto;
+    direction: rtl;
+}
+
+    .notify-success h3 {
+        font-family: inherit;
+        margin: 5px
+    }
+
+    .notify-success img {
+        float: right;
+        margin: 10px 10px 10px 10px;
+    }
+
+    .notify-success p {
+        margin: 0 !important;
+    }
+
+    .notify-success span {
+        margin-bottom: 5px;
+        float: left;
+        font-size: small;
+    }
+
+
+
+
+.bocrud-container {
+    border: solid 1px lightgray;
+    border-top-color: lightgray;
+    border-top-style: solid;
+    border-top-width: 1px;
+    border-right-color: lightgray;
+    border-right-style: solid;
+    border-right-width: 1px;
+    border-bottom-color: lightgray;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+    border-left-color: lightgray;
+    border-left-style: solid;
+    border-left-width: 1px;
+    border-image-source: initial;
+    border-image-slice: initial;
+    border-image-width: initial;
+    border-image-outset: initial;
+    border-image-repeat: initial;
+    display: inline;
+    width: auto;
+    padding-left: 6px;
+    padding-right: 5px;
+    font-size: 16px;
+    border-radius: 5px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    margin: 0px 16px 0px 0px;
+    margin-top: 0px;
+    margin-right: 16px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    z-index: 1;
+    background-color: aliceblue !important;
+    color: #0d5ca0;
+    position: relative;
+}
+
+fieldset {
+    padding-right: 50px;
+    position: relative;
+    border: 1px solid #b5d6e6;
+    margin-top: 0 0 20px;
+}
+
+legend {
+    font-size: 14px;
+    background: #5facb6;
+    color: white;
+    text-transform: uppercase;
+    text-align: center;
+    padding-left: 5px;
+    padding-right: 5px;
+    height: 100%;
+    width: auto;
+    position: absolute;
+    right: 0;
+    top: 0;
+    /* turn the text sideways */
+    -o-writing-mode: vertical-rl;
+    -ms-writing-mode: vertical-rl;
+    -moz-writing-mode: vertical-rl;
+    -webkit-writing-mode: vertical-rl;
+    writing-mode: vertical-rl;
+    /* flip th etext around */
+    -o-transform: rotate(180deg); /* Opera */
+    -ms-transform: rotate(180deg); /* IE */
+    -moz-transform: rotate(180deg); /* Moz */
+    -webkit-transform: rotate(180deg); /* Safari */
+    transform: rotate(180deg0);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+user agent stylesheet legend {
+    -webkit-padding-start: 2px;
+    -webkit-padding-end: 2px;
+}
+
+.ui-widget-content {
+    border: 1px solid #ddd;
+    background: #fff;
+}
+
+.rtl .main-container {
+    direction: rtl;
+    text-align: right;
+}
+
+body, h1, h2, h3, h4, h5, h6, text {
+    font-family: 'Yekan','Yekan','Yekan',Tahoma;
+}
+
+body, h1, h2, h3, h4, h5, h6 {
+    -webkit-font-smoothing: antialiased;
+}
+
+body {
+    padding-bottom: 0;
+    background-color: #e4e6e9;
+    min-height: 100%;
+}
+
+body {
+    background-color: #fff;
+}
+
+html {
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+:before, :after {
+    box-sizing: border-box;
+}
+
+:before, :after {
+    box-sizing: border-box;
+}
+
+.fitToParent {
+    width: 99.5%;
+    height: 99.5%;
+    margin: 0;
+    padding: 0;
+}
+
+input {
+    color: black !important;
+}
+
+
+.lable-class {
+    min-width: 100px;
+    background-color: #cfecf2;
+    padding-left: 12px !important;
+    padding-right: 5px !important;
+    border: 2.5px solid !important;
+    border-color: white !important;
+    text-align: right !important;
+    border-radius: 8px;
+    padding-top: 7px !important;
+    padding-bottom: 7px !important;
+}
+
+input.k-textbox {
+    border-color: #037790 !important;
+}
+
+.k-grid-toolbar-button {
+    min-width: 16px !important;
+    width: 24px !important;
+    padding: 2px !important;
+}
+
+
+.greenClass {
+    background: #225d31;
+    color: #eee;
+    font-weight: 500;
+}
+
+.redClass {
+    background: red;
+    color: #eee;
+    font-weight: 500;
+}
+
+.whiteClass {
+    background: white;
+    color: black;
+    font-weight: 500;
+}
+
+.lable-framework {
+    min-width: 100px;
+    padding: 7px !important;
+    border: 2.5px solid !important;
+    border-color: #bcf1ae !important;
+    text-align: right !important;
+    margin: 1px -16px !important;
+    border-radius: 0px 8px 8px 0px;
+    background-color: #00a65a;
+    color: white;
+    font-size: larger;
+}
+
+.text-framework {
+    width: 100%;
+    border-radius: 9px 0px 0px 9px;
+    min-width: 100px;
+    border: 2.5px solid !important;
+    border-color: #bcf1ae !important;
+    font-size: larger;
+}
+
+.navbar-nav > .user-menu > .dropdown-menu {
+    width: 197px !important;
+}
+
+
+
+.k-draghandle.k-state-selected:hover, .k-ghost-splitbar-horizontal, .k-ghost-splitbar-vertical, .k-list > .k-state-highlight, .k-list > .k-state-selected, .k-marquee-color, .k-panel > .k-state-selected, .k-scheduler .k-scheduler-toolbar .k-state-selected, .k-scheduler .k-today.k-state-selected, .k-state-selected, .k-state-selected:link, .k-state-selected:visited, .k-tool.k-state-selected {
+    color: #fff;
+    background-color: rgb(0, 166, 90);
+    border-color: rgb(188, 241, 174);
+}
+
+.k-grid-header .k-header > .k-link, .k-header, .k-treemap-title {
+    color: #000;
+}

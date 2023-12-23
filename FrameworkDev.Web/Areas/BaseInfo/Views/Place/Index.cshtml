@@ -1,0 +1,381 @@
+﻿@model FrameworkDev.Web.Areas.BaseInfo.Models.VM_PlaceInfo
+@using Kendo.Mvc.UI
+@{
+    /**/
+
+    ViewBag.Title = "موقعیت جغرافیایی";
+    ViewBag.Description = "";
+    var currentUser = User as FrameworkDev.Web.Helpers.Authentication.CustomPrincipal;
+}
+<form id='PlaceForm' class='Place' style='margin:15px; background-color:white;'>
+
+    <fieldset class="bocrud-subgroup" style="padding: 10px !important;background-color: white !important;">
+        <div id="ButtonBar" class="ButtonBar">
+            @if (currentUser.HasPermissionUI("BAS:PLC:C"))
+            {
+                @(Html.Kendo().Button()
+                                                                            .Name("btnNewRowPlace")
+                                                                            .HtmlAttributes(new { type = "button" })
+                                                                            .Icon("add")
+                                                                            .Content("ایجاد")
+                                                                            .Events(ev => ev.Click("New"))
+                )}
+            @if (currentUser.HasPermissionUI("BAS:PLC:U"))
+            {
+                @(Html.Kendo().Button()
+                                                                    .Name("btnEditRowPlace")
+                                                                    .HtmlAttributes(new { type = "button" })
+                                                                    .Icon("edit")
+                                                                    .Content("ویرایش")
+                                                                    .Events(ev => ev.Click("Edit"))
+                )}
+            @if (currentUser.HasPermissionUI("BAS:PLC:D"))
+            {
+                @(Html.Kendo().Button()
+                                                                    .Name("btnDeletePlace")
+                                                                    .HtmlAttributes(new { type = "button" })
+                                                                    .Icon("delete")
+                                                                    .Content("حذف")
+                                                                    .Events(ev => ev.Click("Delete"))
+                )}
+            @(Html.Kendo().Button()
+                                                        .Name("btnAcceptChangesPlace")
+                                                        .HtmlAttributes(new { type = "button" })
+                                                        .Icon("save")
+                                                        .Content("ذخیره")
+                                                        .Events(ev => ev.Click("Save"))
+            )
+            @(Html.Kendo().Button()
+                                                        .Name("btnCancelChangesPlace")
+                                                        .HtmlAttributes(new { type = "button" })
+                                                        .Icon("cancel")
+                                                        .Content("انصراف")
+                                                        .Events(ev => ev.Click("Cancel"))
+            )
+        </div>
+    </fieldset>
+    <div class='container'>
+        <div class='row '>
+            <fieldset class="bocrud-subgroup" style="padding: 10px !important;background-color: white !important;">
+                <div class='col-md-3' style='height:500px;'>
+
+                    <div id='PLCTreeview' class='k-header k-treeview CellTree '>
+                    </div>
+                </div>
+                <div class='col-md-9'>
+                    @Html.AntiForgeryToken()
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                    <div class=" rTable">
+                        @Html.EditorFor(x => x.PlaceId, "IGStringReadonly", new { @id = "PlaceId" })
+                        @Html.EditorFor(x => x.ParentId, "IGString", new { @id = "ParentId" })
+                        @Html.EditorFor(x => x.Name, "IGString", new { @id = "Name" })
+                        @Html.EditorFor(x => x.Code, "IGString", new { @id = "Code" })
+                        @*@Html.EditorFor(x => x.PLCX, "IGString", new { @id = "PLCX" })
+                            @Html.EditorFor(x => x.PLCY, "IGString", new { @id = "PLCX" })*@
+                        @Html.EditorFor(x => x.TelCode, "IGString", new { @id = "TelCode" })
+                        @*@Html.EditorFor(x => x.PLCCoefficient, "IGString", new { @id = "PLCCoefficient" })*@
+                        @*@Html.EditorFor(x => x.PLCExtra, "IGString", new { @id = "PLCExtra" })*@
+                        @*@Html.EditorFor(x => x.PLCPrivation, "IGString", new { @id = "PLCPrivation" })*@
+                        @*@Html.EditorFor(x => x.PLCWeather, "IGString", new { @id = "PLCWeather" })*@
+                        @*@Html.EditorFor(x => x.PLCAway, "IGString", new { @id = "PLCAway" })*@
+                        @*@Html.EditorFor(x => x.PLCBoundary, "IGString", new { @id = "PLCBoundary" })*@
+                        @*@Html.EditorFor(x => x.PLCActive, "IGBooleanCheckbox", new { @id = "PLCActive" })*@
+
+                        @Html.EditorFor(x => x.Note, "IGString", new { @id = "Note" })
+                    </div>
+                </div>
+            </fieldset>
+        </div>
+    </div>
+</form>
+<script>
+    let entityTitle = 'اطلاعات استانها';
+    //let basePageAddr = '/BaseInfo/Place/';
+    let baseApiAddr = '/api/Placeapi/';
+
+    $(function () {
+        //enable kendo validator for all form elements
+        $('#PlaceForm').kendoValidator();
+        $('#PlaceForm').validate({ ignore: [] });
+        $.validator.setDefaults({ ignore: [] });
+    });
+
+    $().ready(function () {
+        readPlace();
+        //makeComponentDisabled('Place', true);
+    });
+
+    //نمایش اطلاعات پس از انتخاب نود از درخت محل ها
+    // let entityId = 0;
+    // let tName;
+    //  let editmodePlace = false;
+
+    //load UC form based on selected item
+    function filterPlace(e) {
+        let dt = getSelectedNod(tName);
+        entityId = dt.id;
+        loadPlacedata(dt);
+        editmodePlace = false;
+    }
+
+    //handle click event of treeview
+    function treeViewClick() {
+        tName = 'PLCTreeview';
+        filterPlace();
+    }
+
+    //load selected UC data to form
+    function loadPlacedata(dt) {
+        makeComponentDisabled('Place', true);
+        prepareToolBarAction('Place', true, true, true, false, false);
+        $.ajax({
+            url: baseApiAddr + dt.id,
+            datatype: 'json',
+            type: 'GET',
+            success: function (res) {
+                $('#PlaceId').val(res.PlaceId);
+                $('#ParentId').val(res.ParentId);
+                $('#Name').val(res.Name);
+                $('#Code').val(res.Code);
+                //$('#PLCX').val(res.PLCX);
+                //$('#PLCY').val(res.PLCY);
+                $('#TelCode').val(res.TelCode);
+                //  $('#PLCCoefficient').val(res.PLCCoefficient);
+                // $('#PLCExtra').val(res.PLCExtra);
+                //  $('#PLCPrivation').val(res.PLCPrivation);
+                //  $('#PLCWeather').val(res.PLCWeather);
+                //   $('#PLCAway').val(res.PLCAway);
+                //   $('#PLCBoundary').val(res.PLCBoundary);
+                $('#PLCActive').prop('checked', res.PLCActive);
+                $('#Note').val(res.Note);
+            },
+            error(err) {
+                console.error(err.responseJSON.ExceptionMessage);
+            }
+        });
+    }
+
+    function New() {
+        if (getSelectedNod(tName) === null) {
+            Alert('fa fas fa-exclamation-triangle', 'اخطار', 'یك ' + entityTitle + ' را انتخاب كنید', 'red', '', null);
+            return;
+        }
+        $('#PlaceId').val('');
+        $('#Name').val('');
+        $('#Code').val('');
+        //$('#PLCX').val('');
+        //$('#PLCY').val('');
+        $('#TelCode').val('');
+        $('#Code').val('');
+        $('#Note').val('');
+        //$('#PLCActive').prop('checked', false);
+        editmodePlace = false;
+        makeComponentDisabled('Place', false);
+        makeInputClear('Place');
+        $('#PlaceId').prop('disabled', true);
+        $('#ParentId').val(entityId);
+        $('#ParentId').prop('disabled', true);
+        prepareToolBarAction('Place', false, false, false, true, true);
+
+    }
+
+    //event : handle click event of edit UC button
+    function Edit() {
+        if (getSelectedNod(tName) === null) {
+            Alert('fa fas fa-exclamation-triangle', 'اخطار', 'یك ' + entityTitle + ' را انتخاب كنید', 'red', '', null);
+            return;
+        }
+        editmodePlace = true;
+        makeComponentDisabled('Place', false);
+        prepareToolBarAction('Place', false, false, false, true, true);
+        $('#PlaceId').prop('disabled', true);
+        $('#ParentId').prop('disabled', true);
+    }
+
+    function Delete() {
+        if (getSelectedNod(tName) === null) {
+            Alert('fa fas fa-exclamation-triangle', 'اخطار', 'یك ' + entityTitle + ' برای حذف انتخاب كنید', 'red', '', null);
+        } else {
+
+            ConfirmAlert('حذف ' + entityTitle + '', 'آیا از حذف این ' + entityTitle + ' اطمینان دارید؟', delItem);
+            //makeInputClear('Place');
+        }
+    }
+
+    //انتخاب دکمه ذخیره
+    function Save() {
+        if (getSelectedNod(tName) === null) {
+            Alert('fa fas fa-exclamation-triangle', 'اخطار', 'یك ' + entityTitle + ' را انتخاب كنید', 'red', '', null);
+            return;
+        }
+
+        if ($('#PlaceForm').valid()) {
+            if (editmodePlace) {
+                api_action('update')
+            } else {
+                api_action('insert');
+            }
+        }
+        //   makeInputClear('Place');
+    }
+
+    function Cancel() {
+        prepareToolBarAction('Place', true, true, true, false, false);
+        editmodePlace = false;
+        makeComponentDisabled('Place', true);
+    }
+
+    let ds;
+    function readPlace() {
+        prepareToolBarAction("Place", true, true, true, false, false);
+        makeComponentDisabled("Place", true);
+        ds = new kendo.data.HierarchicalDataSource({
+            transport: {
+                read: {
+                    url: baseApiAddr + 'a/GetPlaceTree',
+                    datatype: 'json',
+                    type: 'GET'
+                }
+            },
+            schema: {
+                model: {
+                    id: 'Id',
+                    hasChildren: 'HasChildren'
+                }
+            }
+        });
+
+        $('#PLCTreeview').kendoTreeView({
+            dataSource: ds,
+            loadOnDemand: true,
+            dataTextField: 'Name',
+            change: function () {
+                treeViewClick();
+            }
+        });
+    }
+
+    function reloadTreeView() {
+        let tree = $('#PLCTreeview').data('kendoTreeView');
+        tree.dataSource.read();
+    }
+
+    //make ajax calls to api layer
+    function api_action(_actiontype) {
+        let _actionTitle = "";
+        let _actionMethod = "";
+        switch (_actiontype) {
+            case "insert":
+                _actionTitle = "ایجاد";
+                _actionMethod = "POST";
+                break;
+            case "update":
+                _actionTitle = "بروزرسانی";
+                _actionMethod = "PUT";
+                break;
+            case "delete":
+                _actionTitle = "حذف";
+                _actionMethod = "DELETE";
+                break;
+            default: break;
+        }
+        $.ajax({
+            url: baseApiAddr + entityId,
+            type: _actionMethod,
+            data: getBindedModel(),
+            datatype: 'json',
+            success: function (result) {
+                if (!result) {
+                    Alert('fa fa-frown-o', 'مشكلی در ' + _actionTitle + ' ' + entityTitle + '', '' + entityTitle + ' ' + _actionTitle + ' نشد', 'red', '', null);
+                } else {
+
+                    Alert('fa fa-smile-o', 'موفق', '' + entityTitle + ' با موفقیت ' + _actionTitle + ' شد', 'green', '', null);
+                    prepareToolBarAction('Place', true, true, true, false, false);
+                    makeComponentDisabled('Place', true);
+                    reloadTreeView();
+                }
+            },
+            error(err) {
+                //alert(err.responseJSON.ExceptionMessage);
+                //console.error(err.responseJSON.ExceptionMessage);
+            }
+        });
+    }
+
+    function delItem() {
+        let _actionTitle = "حذف";
+        let _actionMethod = "DELETE";
+
+        $.ajax({
+            url: baseApiAddr + entityId,
+            type: _actionMethod,
+            data: getBindedModel(),
+            datatype: 'json',
+            success: function (result) {
+                if (!result) {
+                    Alert('fa fa-frown-o', 'مشكلی در ' + _actionTitle + ' ' + entityTitle + '', '' + entityTitle + ' ' + _actionTitle + ' نشد', 'red', '', null);
+                } else {
+                    if (result.PlaceId == 0) {
+                        Alert('fa fa-frown-o', 'پیغام هشدار', 'به دلیل در گردش بودن اطلاعات این ركورد قابل حذف نمی باشد', 'orange', '', null);
+                        return false;
+                    }
+
+                    Alert('fa fa-smile-o', 'موفق', '' + entityTitle + ' با موفقیت ' + _actionTitle + ' شد', 'green', '', null);
+                    prepareToolBarAction('Place', true, true, true, false, false);
+                    makeComponentDisabled('Place', true);
+                    $('#PlaceId').val('');
+                    $('#ParentId').val('');
+                    $('#Name').val('');
+                    $('#Code').val('');
+                    //$('#PLCX').val('');
+                    //$('#PLCY').val('');
+                    $('#TelCode').val('');
+                    $('#Note').val('');
+
+
+                    reloadTreeView();
+                }
+            },
+            error(err) {
+                //alert(err.responseJSON.ExceptionMessage);
+                //console.error(err.responseJSON.ExceptionMessage);
+            }
+        });
+    }
+        //reverse model binding
+    function getBindedModel() {
+        //  var now = new Date();
+        let request = {
+            PlaceId: entityId,
+            ParentId: $('#ParentId').val(),
+            Name: $('#Name').val(),
+            Code: $('#Code').val(),
+            //PLCX: $('#PLCX').val(),
+            //PLCY: $('#PLCY').val(),
+            TelCode: $('#TelCode').val(),
+            Note: $('#Note').val(),
+            PLCActive: true,
+            Type: 0,
+        };
+        return request;
+    }
+
+    function renderResult(res) {
+        let description = '' + '\n\n';
+        if (res.length > 0) {  // فیلدهایی كه دارای ولیدیشن هستند
+            for (let i = 0; i < res.length; i++) {
+                description += res[i].Massege + '\n';
+            }
+            return description;
+        }
+    }
+
+    function getSelectedNod(treeviewid) {
+        try {
+            let treeview = $('#' + treeviewid).data('kendoTreeView');
+            return treeview.dataItem(treeview.select());
+        } catch (err) {
+            return null;
+        }
+    }
+</script>

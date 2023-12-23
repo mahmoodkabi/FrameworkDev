@@ -1,0 +1,10 @@
+﻿#mytv {
+    display: block !important;
+    position: fixed !important;
+    top: 100px !important;
+    bottom: 10px !important;
+    right: 10px !important;
+    left: 10px !important;
+    border: 1px solid !important;
+    border-radius: 2px !important;
+}

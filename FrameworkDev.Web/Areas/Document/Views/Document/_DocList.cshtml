@@ -1,0 +1,97 @@
+﻿
+@using FrameworkDev.Web.Helpers.KendoMVC
+@using FrameworkDev.Web.Areas.Document.Controllers
+@using FrameworkDev.Web.Areas.Document.Models
+
+@using Kendo.Mvc.UI
+
+<br/>
+<div id="AddDocumentPanel">
+    <form id="DocumentForm" class="Document">
+        <div class="container-fluid">
+            <div class="row">
+                <fieldset class="bocrud-subgroup" style="padding: 10px !important;background-color: white !important;">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="Fileanme">انتخاب فایل :</label>
+                            @(Html.Kendo().Upload()
+                                                .Name("file")
+                                                .Multiple(false)
+                                                .Messages(m => m.Select("انتخاب فایل"))
+                                                .HtmlAttributes(new { aria_lable = "file" })
+                                                .Async(a => a
+                                                .Save("AutoUploadFile", "Document", new { Area = "Document" })
+                                                .Remove("AutoUploadFile", "Document", new { Area = "Document" })
+                                                .AutoUpload(true))
+                            )
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label for="FirstName">توضیحات :</label>
+                            @(Html.Kendo().TextBox()
+                                                .Name("DocDesc")
+                                                .HtmlAttributes(new
+                                                {
+                                                    @class = "k-textbox",
+                                                    style = "width:100%; height:50px;"
+                                                })
+                            )
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12" style="text-align:center;">
+                            @(Html.Kendo().Button()
+                                                .Name("btnAddDoc")
+                                                .HtmlAttributes(new { type = "button" })
+                                                .Icon("add")
+                                                .Content("افزودن فایل")
+                                                .Events(ev => ev.Click("AddDocument"))
+                            )
+                        </div>
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+    </form>
+</div>
+<div id="DialogChartHierarchy">
+    @(Html.Kendo().Grid<VM_Document>()
+                        .Name("DocumentGrid")
+                        .Columns(columns =>
+                        {
+                            columns.Bound(c => c.DocName)
+                .ClientTemplate(@Html.ActionLink("#=DocName#", "ViewDoc", new { Area = "Document", Controller = "Document", action = "ViewDoc", DocId = "#=DocId#" }, new { Area = "Document" }).ToHtmlString());
+                            columns.Bound(c => c.DocDesc);
+                            columns.Bound(c => c.DocCrePersianDate);
+                    //columns.Bound(c => c.RPCNote).Width(100);
+                    columns.Command(command =>
+                            {
+                                command.Destroy().Text("حذف");
+                        // command.Custom("ViewDoc").Action("ViewDoc", "Document").Text("مشاهده").IconClass("k-information");
+                    }).Title("عملیات");
+                        })
+                        //    .ToolBar(toolbar =>
+                        //    {
+                        ////toolbar.Save().CancelText("لغو تغییرات").SaveText("ذخیره تغییرات");
+                        ////toolbar.Custom().IconClass("").HtmlAttributes(new { @class = "form-group pull-right" });
+                        //toolbar.Create().Text("ایجاد");
+                        //    })
+                        .Editable(editable => editable.ConfirmDelete("Deleted").DisplayDeleteConfirmation("آیااطمینان دارید؟"))
+                        .Scrollable(x => x.Height("auto"))
+                        .Selectable(s => s.Type(GridSelectionType.Row).Mode(GridSelectionMode.Single))
+                        .AutoBind(false)
+                        .NoRecords("اطلاعاتی جهت نمایش وجود ندارد")
+                        .DataSource(dataSource => dataSource
+                        .Ajax()
+                        .PageSize(20)
+                        .Model(model => model.Id(p => p.DocId))
+                        .Read(read => read.Action("GetDocList", "Document", new { Area = "Document" }))
+                        .Update(update => update.Action("ViewDoc", "Document", new { Area = "Document" }))
+                        .Destroy(del => del.Action("DeleteDoc", "Document", new { Area = "Document" }))
+                        )
+    )
+</div>
+
+@*#######################################################################################*@
