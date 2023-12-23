@@ -1,0 +1,17 @@
+﻿@using Kendo.Mvc.UI
+
+@model string
+
+@{
+    string fieldName = Html.NameForModel().ToString();
+}
+
+@(Html.TextBoxFor(m => m, htmlAttributes: new { @class = "MdPersianDateTimePicker k-widget fullwidth" }))
+
+<script>
+    $('#@(fieldName)').MdPersianDateTimePicker();
+
+    $('#@(fieldName)').on('hidden.bs.popover', function () {
+        $('#@(fieldName)').val($('#@(fieldName)').MdPersianDateTimePicker('getDate'));
+    });
+</script>

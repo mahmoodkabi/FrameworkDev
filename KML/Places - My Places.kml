@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml
+    xmlns="http://www.opengis.net/kml/2.2">
+    <Document>
+        <name>Places - My Places</name>
+        <Style id="mcffffffffms08miuhttpmapsgooglecommapfileskmlshapesdonutpng">
+            <IconStyle>
+                <Icon>
+                    <href>http://maps.google.com/mapfiles/kml/shapes/donut.png</href>
+                </Icon>
+                <color>ffffffff</color>
+                <scale>0.8</scale>
+            </IconStyle>
+        </Style>
+        <Placemark>
+            <name>My Place 2</name>
+            <ExtendedData>
+                <Data name="qldglobe_place_name">
+                    <value>My Place 2</value>
+                </Data>
+                <Data name="_labelid">
+                    <value>places-label-1614401090021-3</value>
+                </Data>
+                <Data name="_measureLabelsIds">
+                    <value></value>
+                </Data>
+                <Data name="Lat/Long">
+                    <value>-19.56901,147.40503</value>
+                </Data>
+            </ExtendedData>
+            <Point>
+                <coordinates>147.40502620112355,-19.56901069085609</coordinates>
+            </Point>
+            <styleUrl>#mcffffffffms08miuhttpmapsgooglecommapfileskmlshapesdonutpng</styleUrl>
+        </Placemark>
+        <Style id="sffffffsw3mo1ffffffffo014901960784313725">
+            <LineStyle>
+                <color>ffffffff</color>
+                <width>3</width>
+            </LineStyle>
+            <PolyStyle>
+                <color>26ffffff</color>
+            </PolyStyle>
+        </Style>
+        <Placemark>
+            <name>My Place 3</name>
+            <ExtendedData>
+                <Data name="qldglobe_place_name">
+                    <value>My Place 3</value>
+                </Data>
+                <Data name="_labelid">
+                    <value>places-label-1614401149308-5</value>
+                </Data>
+                <Data name="_measureLabelsIds">
+                    <value></value>
+                </Data>
+                <Data name="Perimeter">
+                    <value>578.64 m</value>
+                </Data>
+                <Data name="Area">
+                    <value>1.81 hectares</value>
+                </Data>
+            </ExtendedData>
+            <Polygon>
+                <outerBoundaryIs>
+                    <LinearRing>
+                        <coordinates>147.40445757281245,-19.569748655296628 147.4051871336644,-19.570183345098098 147.40520859133653,-19.570183345098098 147.40624928843425,-19.569263418784654 147.40585232150005,-19.56827272303677 147.40445757281245,-19.569748655296628</coordinates>
+                    </LinearRing>
+                </outerBoundaryIs>
+            </Polygon>
+            <styleUrl>#sffffffsw3mo1ffffffffo014901960784313725</styleUrl>
+        </Placemark>
+        <Style id="mcff000000ms23125">
+            <IconStyle>
+                <Icon></Icon>
+            </IconStyle>
+            <LabelStyle>
+                <color>ff000000</color>
+                <scale>2.3125</scale>
+            </LabelStyle>
+        </Style>
+        <Placemark>
+            <name>My Place 1</name>
+            <ExtendedData>
+                <Data name="qldglobe_place_name">
+                    <value>My Place 1</value>
+                </Data>
+                <Data name="_labelid">
+                    <value>places-label-1614400927005-1</value>
+                </Data>
+                <Data name="_measureLabelsIds">
+                    <value></value>
+                </Data>
+                <Data name="Lat/Long">
+                    <value>-19.57058,147.41066</value>
+                </Data>
+                <Data name="marker-label">
+                    <value>true</value>
+                </Data>
+            </ExtendedData>
+            <Point>
+                <coordinates>147.41065813712171,-19.570579751896016</coordinates>
+            </Point>
+            <styleUrl>#mcff000000ms23125</styleUrl>
+        </Placemark>
+    </Document>
+</kml>

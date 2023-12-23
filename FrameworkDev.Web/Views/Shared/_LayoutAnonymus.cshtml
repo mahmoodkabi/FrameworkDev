@@ -1,0 +1,46 @@
+﻿@using System.Web.Optimization
+
+
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>
+        @FrameworkDev.Web.Resources.DisplayNames.ApplicationTitle - @if (!string.IsNullOrWhiteSpace(ViewBag.Title))
+        {@ViewBag.Title}
+    </title>
+
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+
+    <link href="~/Content/css/FrameworkDev.css" rel="stylesheet" />
+    <link href="~/Content/lib/bootstrap/bootstrap-3.3.7-dist/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/lib/bootstrap/bootstrap-3.4.0-rtl-dist/css/bootstrap-rtl.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/fonts/font-awesome/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/fonts/iransans/Iransans.css" rel="stylesheet" type="text/css" />
+    <link href="~/Content/lib/login1/login.main.css" rel="stylesheet" />
+
+    <script src="~/Content/lib/jquery/3.3.1/jquery-3.3.1.min.js"></script>
+    <script src="~/Content/lib/login1/login.main.js"></script>
+    <script src="~/Content/lib/jquery.validate/jquery.validate.min.js"></script>
+    <script src="~/Content/lib/jquery.validate/jquery.validate.unobtrusive.min.js"></script>
+    <script src="~/Content/lib/login/js/main.js"></script>
+    <script src="~/Content/lib/bootstrap/bootstrap-3.3.7-dist/js/bootstrap.min.js"></script>
+
+</head>
+<body dir="rtl">
+
+
+
+    @RenderBody()
+
+
+    <script src="@RouteJs.RouteJsHandler.HandlerUrl"></script>
+
+    @RenderSection("ViewSpecificJavascript", required: false)
+</body>
+</html>

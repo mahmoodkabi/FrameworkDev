@@ -1,0 +1,129 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="OSMModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="OSM_ROADS">
+          <Key>
+            <PropertyRef Name="OBJECTID" />
+          </Key>
+          <Property Name="OBJECTID" Type="int" Nullable="false" />
+          <Property Name="osm_id" Type="nvarchar" MaxLength="10" />
+          <Property Name="code" Type="smallint" />
+          <Property Name="fclass" Type="nvarchar" MaxLength="28" />
+          <Property Name="name" Type="nvarchar" MaxLength="100" />
+          <Property Name="ref" Type="nvarchar" MaxLength="20" />
+          <Property Name="oneway" Type="nvarchar" MaxLength="1" />
+          <Property Name="maxspeed" Type="smallint" />
+          <Property Name="layer" Type="numeric" Precision="12" Scale="0" />
+          <Property Name="bridge" Type="nvarchar" MaxLength="1" />
+          <Property Name="tunnel" Type="nvarchar" MaxLength="1" />
+          <Property Name="Shape" Type="geometry" />
+          <Property Name="CountyOsmId" Type="nvarchar" MaxLength="10" />
+          <Property Name="CityOsmId" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <Function Name="sp_GeoCoding" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="County" Type="nvarchar" Mode="In" />
+          <Parameter Name="City" Type="nvarchar" Mode="In" />
+          <Parameter Name="Zone" Type="nvarchar" Mode="In" />
+          <Parameter Name="Mabar1" Type="nvarchar" Mode="In" />
+          <Parameter Name="Mabar2" Type="nvarchar" Mode="In" />
+          <Parameter Name="Mabar3" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="sp_ReverseGeocoding" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo">
+          <Parameter Name="XY" Type="varchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="OSMModelStoreContainer">
+          <EntitySet Name="OSM_ROADS" EntityType="Self.OSM_ROADS" Schema="dbo" store:Type="Tables" />
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="OSMModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="OSMEntities" annotation:LazyLoadingEnabled="true" >
+          <FunctionImport Name="sp_GeoCoding" ReturnType="Collection(String)">
+            <Parameter Name="County" Mode="In" Type="String" />
+            <Parameter Name="City" Mode="In" Type="String" />
+            <Parameter Name="Zone" Mode="In" Type="String" />
+            <Parameter Name="Mabar1" Mode="In" Type="String" />
+            <Parameter Name="Mabar2" Mode="In" Type="String" />
+            <Parameter Name="Mabar3" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="sp_ReverseGeocoding" ReturnType="Collection(String)">
+          <Parameter Name="XY" Mode="In" Type="String" />
+          </FunctionImport>
+          <EntitySet Name="OSM_ROADS" EntityType="OSMModel.OSM_ROADS" />
+        </EntityContainer>
+        <EntityType Name="OSM_ROADS">
+          <Key>
+            <PropertyRef Name="OBJECTID" />
+          </Key>
+          <Property Name="OBJECTID" Type="Int32" Nullable="false" />
+          <Property Name="osm_id" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="code" Type="Int16" />
+          <Property Name="fclass" Type="String" MaxLength="28" FixedLength="false" Unicode="true" />
+          <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ref" Type="String" MaxLength="20" FixedLength="false" Unicode="true" />
+          <Property Name="oneway" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="maxspeed" Type="Int16" />
+          <Property Name="layer" Type="Decimal" Precision="12" Scale="0" />
+          <Property Name="bridge" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="tunnel" Type="String" MaxLength="1" FixedLength="false" Unicode="true" />
+          <Property Name="Shape" Type="Geometry" />
+          <Property Name="CountyOsmId" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="CityOsmId" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+        </EntityType>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="OSMModelStoreContainer" CdmEntityContainer="OSMEntities" >
+          <FunctionImportMapping FunctionImportName="sp_GeoCoding" FunctionName="OSMModel.Store.sp_GeoCoding" />
+          <FunctionImportMapping FunctionImportName="sp_ReverseGeocoding" FunctionName="OSMModel.Store.sp_ReverseGeocoding" />
+          <EntitySetMapping Name="OSM_ROADS">
+            <EntityTypeMapping TypeName="OSMModel.OSM_ROADS">
+              <MappingFragment StoreEntitySet="OSM_ROADS">
+                <ScalarProperty Name="CityOsmId" ColumnName="CityOsmId" />
+                <ScalarProperty Name="CountyOsmId" ColumnName="CountyOsmId" />
+                <ScalarProperty Name="Shape" ColumnName="Shape" />
+                <ScalarProperty Name="tunnel" ColumnName="tunnel" />
+                <ScalarProperty Name="bridge" ColumnName="bridge" />
+                <ScalarProperty Name="layer" ColumnName="layer" />
+                <ScalarProperty Name="maxspeed" ColumnName="maxspeed" />
+                <ScalarProperty Name="oneway" ColumnName="oneway" />
+                <ScalarProperty Name="ref" ColumnName="ref" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="fclass" ColumnName="fclass" />
+                <ScalarProperty Name="code" ColumnName="code" />
+                <ScalarProperty Name="osm_id" ColumnName="osm_id" />
+                <ScalarProperty Name="OBJECTID" ColumnName="OBJECTID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

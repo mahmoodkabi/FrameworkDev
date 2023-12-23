@@ -1,0 +1,17 @@
+﻿@model bool?
+
+
+
+<div class="rTableRow">
+    <div class="rTableHead k-header">
+        @Html.LabelFor(model => model, htmlAttributes: new { @class = "control-label", style = "min-width: 100px;" })
+    </div>
+    <div class="rTableCell">
+        @Html.Kendo().DropDownListFor(m => m).BindTo((new SelectListItem[] { new SelectListItem() { Text = "زن", Value = "true", Selected = (Model == true) }, new SelectListItem() { Text = "مرد", Value = "false", Selected = (Model == false) }, new SelectListItem() { Text = "نامشخص", Value = null, Selected = (Model == null) } })).HtmlAttributes(new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model)
+    </div>
+</div>
+
+
+
+

@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="3ed7f8b0fcf04e99b0bfc749cee1d39e" Name="Diagram1">
+        <EntityTypeShape EntityType="FrameworkDevModel.BaseInfo" Width="1.5" PointX="0.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.BookMark" Width="1.5" PointX="2.75" PointY="5.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.CodeFile" Width="1.5" PointX="6" PointY="8.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.Document" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.Group" Width="1.5" PointX="3.75" PointY="11.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.MapRequest" Width="1.5" PointX="7.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.Message" Width="1.5" PointX="9.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.Notification" Width="1.5" PointX="8.25" PointY="11" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.Permission" Width="1.5" PointX="8.25" PointY="16.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.Person" Width="1.5" PointX="11.25" PointY="12.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.Place" Width="1.5" PointX="9" PointY="6.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.Profile" Width="1.5" PointX="8.25" PointY="24.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.Report" Width="1.5" PointX="11.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.RequestLog" Width="1.5" PointX="20.5" PointY="1.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.RequestParaph" Width="1.5" PointX="20.5" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.Request" Width="1.5" PointX="18.25" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.RequestSignature" Width="1.5" PointX="20.5" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.RolePermission" Width="1.5" PointX="3" PointY="14.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.Role" Width="1.5" PointX="0.75" PointY="14.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.Service" Width="1.5" PointX="0.75" PointY="10.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.SubSystem" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.TableName" Width="1.5" PointX="3" PointY="1.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.TBL_UserUnits" Width="1.5" PointX="8.25" PointY="27.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.TBL_UserZones" Width="1.5" PointX="8.25" PointY="19.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.User" Width="1.5" PointX="6" PointY="13" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.WorkFlowStep" Width="1.5" PointX="16" PointY="3" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.WorkFlowType" Width="1.5" PointX="13.75" PointY="5.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="FrameworkDevModel.Zone" Width="1.5" PointX="6" PointY="19.625" IsExpanded="true" />
+        <AssociationConnector Association="FrameworkDevModel.FK_BaseInfo_BaseInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK__Persons__codefile" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_CodeFiles_CodeFiles" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_TBL_BaseInfo_TBL_BaseInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_TBL_Notification_TBL_BaseInfo" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_TBL_Notification_TBL_BaseInfo1" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_TBL_Document_TBL_TablesName" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_TBL_Notification_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_UserPermissionKeys_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK__Persons__UserId__1A567165" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_Persons_Place_BirthPlcId" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_Persons_Place_ExportPlcId" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_TBL_Place_TBL_Place1" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_Profile_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_RequestLog_Request" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_RequestParaph_Request" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_Request_WorkFlowStep1" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_RequestSignature_Request" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_RolePermissions_Roles" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_TBL_TablesName_TBL_SubSystem" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_UserUnits_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_TBL_UserZones_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_TBL_UserZones_Zones" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_WorkFlowStep_WorkFlowType" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.FK_Zones_Zones" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.UserGroups" ManuallyRouted="false" />
+        <AssociationConnector Association="FrameworkDevModel.UserRoles" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="FrameworkDevModel.UserLayer" Width="1.5" PointX="13.375" PointY="11" />
+        <EntityTypeShape EntityType="FrameworkDevModel.UserLayerLineFeature" Width="1.5" PointX="0.75" PointY="17.75" />
+        <EntityTypeShape EntityType="FrameworkDevModel.UserLayerPointFeature" Width="1.5" PointX="2.75" PointY="17.75" />
+        <EntityTypeShape EntityType="FrameworkDevModel.UserLayerPolygonFeature" Width="1.5" PointX="18.75" PointY="12.75" />
+        <EntityTypeShape EntityType="FrameworkDevModel.USERLAYERLINE" Width="1.5" PointX="15.625" PointY="10.75" />
+        <AssociationConnector Association="FrameworkDevModel.FK_USERLAYERLINE_UserLayer" />
+        <EntityTypeShape EntityType="FrameworkDevModel.USERLAYERPOINT" Width="1.5" PointX="15.625" PointY="14.5" />
+        <EntityTypeShape EntityType="FrameworkDevModel.USERLAYERPOLYGON" Width="1.5" PointX="15.625" PointY="17.875" />
+        <AssociationConnector Association="FrameworkDevModel.FK_USERLAYERPOINT_UserLayer1" />
+        <AssociationConnector Association="FrameworkDevModel.FK_USERLAYERPOLYGON_UserLayer" />
+        </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

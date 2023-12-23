@@ -1,0 +1,33 @@
+﻿@using FrameworkDev.Web.Helpers
+@using FrameworkDev.Web.Helpers.Authentication
+
+@{
+    var currentUser = (User as CustomPrincipal);
+}
+
+
+<li class="dropdown user user-menu">
+
+    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+        @{
+            <img src="~/Content/img/user.png" class="user-image" alt="" />
+        }
+
+        <span class="hidden-xs">@currentUser.FirstName @currentUser.LastName</span>
+    </a>
+    <ul class="dropdown-menu">
+        <li class="user-footer">
+            <div class="pull-right">
+                <a href="/Account/MyProfile" class="btn btn-default btn-flat">پروفایل</a>
+            </div>
+            <div class="pull-right">
+                <a href="/Account/ChangePassword" class="btn btn-default btn-flat">تغییر کلمه عبور</a>
+            </div>
+        </li>
+    </ul>
+</li>
+<div class="pull-left">
+    <a href="/Account/LogOut" class="btn btn-default btn-sm" style="margin-top: 10px; margin-left: 5px">
+        <span class="glyphicon glyphicon-log-out"></span> خروج
+    </a>
+</div>

@@ -1,0 +1,38 @@
+﻿@model FrameworkDev.Web.Areas.Management.Models.VM_UserWithProfile
+
+    @{
+        ViewBag.Title = "پروفایل کاربر";
+    }
+
+    <script src="/Views/Account/MyProfile.js"></script>
+
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(model => model.UserId)
+
+        @Html.EditorFor(model => model.Username, "IGStringReadOnly")
+
+        @Html.EditorFor(model => model.FirstName, "IGStringReadOnly")
+
+        @Html.EditorFor(model => model.LastName, "IGStringReadOnly")
+
+        @Html.EditorFor(model => model.Email, "IGString")
+
+        if (Model.CitizenID.HasValue)
+        {
+            @Html.EditorFor(model => model.CTZTelNo, "IGTelephone")
+
+            @Html.EditorFor(model => model.CTZMobileNo, "IGMobile")
+
+            @Html.EditorFor(model => model.CTZAddressHome, "IGTextArea")
+        }
+
+        <div class="col-md-3 ButtonBar">
+            <div class="col-md-3">
+                @(Html.Kendo().Button().Name("SaveMyprofile").Content("ذخیره").HtmlAttributes(new { type = "submit" }))
+            </div>
+        </div>
+
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+    }

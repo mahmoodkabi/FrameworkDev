@@ -1,0 +1,93 @@
+﻿@using FrameworkDev.Web.Helpers
+@using System.Collections.Generic
+@using FrameworkDev.Web.Helpers
+@using FrameworkDev.Web.Helpers.Authentication
+@using FrameworkDev.Web.Helpers.KendoMVC
+@using FrameworkDev.Web.Areas.Management.Models
+
+@model List<SubSystem>
+
+@{
+    ViewBag.Title = "خانه";
+    ViewBag.Description = "";
+    Layout = "~/Views/Shared/_LayoutNoMenu.cshtml";
+
+    var CurrentUser = HttpContext.Current.User as CustomPrincipal;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>@ViewBag.Title</title>
+    <link href="~/Content/css/FrameworkDevHome.css" rel="stylesheet" />
+</head>
+
+<body dir="rtl">
+
+    <header role="banner">
+        <img id="logo" src="~/content/images/RedfunLogo.png">
+        <ul class="utilities">
+            <li><a href="/">برنامه</a></li>
+        </ul>
+        <ul class="util">
+            <li>
+                @*<a href="#">*@
+                <div id="date" class="clock">@DateTime.Now.ToShortDateString()</div>
+                @*</a>*@
+            </li>
+            <li class="dashboard">
+                <div class="profile">
+                    <div class="profile__content">
+                        <div class="profile__bio">
+                            <h3 class="profile__name">@CurrentUser.FirstName @CurrentUser.LastName</h3>
+                            <div id="profile__info" class="profile__info"></div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+            <li>
+                <img class="profile__picture" src="@Url.Action("getPersonelImage","Home")" />
+            </li>
+            <li class="btn btn-default btn-sm" style="margin-top: 10px; margin-right: 5px">
+                <a href="/Account/LogOut" >
+                    <span class="glyphicon glyphicon-log-out"></span> خروج
+                </a>
+                @*<span class="glyphicon glyphicon-log-out"></span> خروج*@
+            </li>
+            @*<li class="logout warn"><a href="/Account/LogOut">خروج</a></li>*@
+        </ul>
+    </header>
+
+    <main role="main">
+        <link href="~/Content/css/thumbnail-gallery.css" rel="stylesheet" type="text/css" />
+        <div class="tz-gallery">
+            <div class="row">
+                @{
+                    foreach (var item in Model)
+                    {
+                        <div class="col-sm-12 col-md-2">
+                            <div class="thumbnail">
+                                <a class="lightbox" href="@item.DefaultURL">
+                                    <img src="/content/images/Subsystem@(item.Id).jpg" alt="">
+                                </a>
+                                <div class="caption">
+                                    <a href="@item.DefaultURL"><h3>@item.NameFa</h3></a>
+                                    <p>@*@item.Description*@</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+        </div>
+
+    </main>
+
+    <script src="/Views/Home/Index.js"></script>
+
+</body>
+</html>
+
+

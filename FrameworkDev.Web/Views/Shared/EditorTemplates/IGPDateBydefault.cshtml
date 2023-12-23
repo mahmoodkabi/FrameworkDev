@@ -1,0 +1,21 @@
+﻿@using Kendo.Mvc.UI
+
+
+@model string
+<div class="rTableRow">
+    <div class="rTableHead k-header">
+        @Html.LabelFor(model => model, htmlAttributes: new { @class = "control-label", style = "min-width: 100px;", @id = "lbl" + @Html.ClientIdFor(model => model).ToString() })
+    </div>
+    <div class="rTableCell">
+        @(Html.Kendo().TextBoxFor(model => model).HtmlAttributes(new { @class = "k-widget IGPDate", @style = "width:100%; text-align:center;", @value = DateTime.Now.ToLocalTime().ToShortDateString() }))
+        @Html.ValidationMessageFor(model => model, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(document).ready(function () {
+        makeMDPDatePicker($('#@Html.ClientIdFor(model => model)'));
+    });
+</script>

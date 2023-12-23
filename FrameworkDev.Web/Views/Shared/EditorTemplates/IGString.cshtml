@@ -1,0 +1,13 @@
+﻿@using Kendo.Mvc.UI
+
+@model object
+
+<div class="form-group row">
+    @Html.LabelFor(model => model, htmlAttributes: new { @class = "col-sm-3 col-form-label lable-framework", style = "min-width: 100px;" })
+    <div class="col-sm-9">
+        @Html.Kendo().MaskedTextBoxFor(model => model).HtmlAttributes(new { @class = "form-control text-framework", style = "width: 100%;" })
+        @Html.ValidationMessageFor(model => model, "", new { @class = "text-danger" })
+    </div>
+</div>
+
+

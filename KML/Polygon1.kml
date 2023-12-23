@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Polygon1.kml</name>
+	<Placemark>
+		<name>Polygon1</name>
+		<styleUrl>#m_ylw-pushpin</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						51.6720212850335,32.6506158990889,0 51.67134481367323,32.64722471814288,0 51.67538684812936,32.64474556282362,0 51.67642304862051,32.64997732247076,0 51.67244081799125,32.65052598064606,0 51.6720212850335,32.6506158990889,0 
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>z
+	</Placemark>
+</Document>
+</kml>

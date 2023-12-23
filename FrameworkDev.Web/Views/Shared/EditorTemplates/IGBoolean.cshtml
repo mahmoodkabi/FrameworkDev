@@ -1,0 +1,13 @@
+﻿@model bool
+
+
+<div class="rTableRow">
+    <div class="rTableHead k-header">
+        @Html.LabelFor(model => model, htmlAttributes: new { @class = "control-label", style = "min-width: 100px;" })
+    </div>
+    <div class="rTableCell">
+        @Html.Kendo().DropDownListFor(m => m).BindTo((new SelectListItem[] { new SelectListItem() { Text = "دارد", Value = "true", Selected = Model }, new SelectListItem() { Text = "ندارد", Value = "false", Selected = !Model } })).HtmlAttributes(new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model)
+    </div>
+
+</div>

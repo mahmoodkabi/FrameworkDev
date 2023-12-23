@@ -1,0 +1,11 @@
+﻿@using Kendo.Mvc.UI
+@model object
+<div class="rTableRow">
+    <div class="rTableHead k-header">
+        @Html.LabelFor(model => model, htmlAttributes: new { @class = "control-label", style = "min-width: 100px;" })
+    </div>
+    <div class="rTableCell">
+        @Html.Kendo().MaskedTextBoxFor(model => model).HtmlAttributes(new { @class = "form-control" })
+        @Html.ValidationMessageFor(model => model, "", new { @class = "text-danger" })
+    </div>
+</div>

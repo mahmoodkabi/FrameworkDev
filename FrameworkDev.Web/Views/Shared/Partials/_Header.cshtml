@@ -1,0 +1,28 @@
+﻿@using FrameworkDev.Web.Helpers
+
+
+
+<header class="main-header">
+
+    <a href="/" class="logo">
+
+        <span class="logo-mini"><img src="~/Content/img/icon.png" style="float: right; margin: 5px; width: 40px;" /></span>
+
+        <span class="logo-lg"><img src="~/Content/img/icon.png" style="float: right; margin: 5px; width: 40px;" />ردفان</span>
+    </a>
+
+    <nav class="navbar navbar-static-top" role="navigation">
+        <a href="#" class="sidebar-toggle" id="pushMenuId" data-toggle="push-menu" role="button">
+            <span class="sr-only">|||</span>
+        </a>
+        <div class="content-header-title ">
+            @ViewBag.Title
+            <small>@ViewBag.Description</small>
+        </div>
+        <div class="navbar-custom-menu">
+            <ul class="nav navbar-nav">
+                @Html.Partial("~/Views/Shared/Partials/_HeaderProfile.cshtml")
+            </ul>
+        </div>
+    </nav>
+</header>

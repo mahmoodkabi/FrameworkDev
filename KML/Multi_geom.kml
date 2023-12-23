@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+<Placemark> 
+	<name>pres_area_seg.kml</name>
+	<Style>
+	<LineStyle>
+        <color>ff000000</color>
+      </LineStyle>
+		<PolyStyle>
+			<fill>0</fill>
+		</PolyStyle>
+	</Style>
+	<Multigeometry> 
+	<Polygon>
+		
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							119.6249229957366,-22.32401504044563,0 119.6279274291159,-22.42177039403288,0 119.860745976001,-22.42457571800923,0 119.8570713252233,-22.32096524414756,0 119.6249229957366,-22.32401504044563,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+	</Polygon> 
+	<Polygon>
+		
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							117.8399901435012,-22.09624132452341,0 117.839517060346,-22.18886183249812,0 118.0112059097832,-22.1895780965034,0 118.0095892722323,-22.09576853420841,0 117.8399901435012,-22.09624132452341,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+	</Polygon> 
+	<Polygon>
+		
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							118.9950518089177,-21.28982951137161,0 119.1211436579133,-21.28567655615394,0 119.1178195496264,-21.17367333918178,0 118.9935165552703,-21.17535592391349,0 118.9950518089177,-21.28982951137161,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+	</Polygon>
+	<Polygon>
+		
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							119.343341880167,-22.27793757701005,0 119.3432806955673,-22.35838852104977,0 119.508826693607,-22.36030933481881,0 119.5045428968192,-22.27651975864152,0 119.343341880167,-22.27793757701005,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+	</Polygon>		
+	</Multigeometry> 
+	</Placemark>
+	</Document>
+</kml>
+ 

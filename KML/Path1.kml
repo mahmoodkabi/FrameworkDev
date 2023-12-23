@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>Path1.kml</name>
+	<Placemark>
+		<name>Path1</name>
+		<styleUrl>#msn_ylw-pushpin</styleUrl>
+		<LineString>
+			<tessellate>1</tessellate>
+			<coordinates>
+				51.67551342779185,32.64257489029919,0 51.67515315741353,32.6409352147725,0 51.67299856315781,32.63900268718948,0 51.67175714296918,32.63950634170352,0 51.67064427224187,32.64059441829014,0 51.6695977053005,32.64160675792294,0 
+			</coordinates>
+		</LineString>
+	</Placemark>
+</Document>
+</kml>

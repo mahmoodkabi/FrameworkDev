@@ -1,0 +1,17 @@
+﻿@using Kendo.Mvc.UI
+
+@model string
+
+<div class="input-group">
+    <div class="input-group-prepend">
+        @Html.LabelFor(model => model, new { @class = "input-group-text" })
+    </div>
+    <div>
+        @(Html.Kendo().TextBoxFor(model => model).HtmlAttributes(new { @class = "k-widget IGPDate", @style="width:100%; text-align:center;" }))
+        @Html.ValidationMessageFor(model => model)
+    </div>
+</div>
+
+<script type="text/javascript">
+    makeMDPDatePicker($('#@Html.ClientIdFor(model => model)'), false, false, '', true);
+</script>
